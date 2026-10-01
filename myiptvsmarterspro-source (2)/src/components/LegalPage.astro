@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../config/site';
+
+interface Section { id: string; h2: string; html: string }
+interface Props {
+  title: string;
+  h1: string;
+  description: string;
+  path: string;
+  sections: Section[];
+}
+const { title, h1, description, path, sections } = Astro.props;
+
+const UPDATED = '2 octobre 2026';
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description,
+    url: `${SITE.url}${path}`,
+    inLanguage: 'fr-FR',
+    dateModified: '2026-10-02',
+    isPartOf: { '@id': `${SITE.url}/#website` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: h1, item: `${SITE.url}${path}` },
+    ],
+  },
+];
+---
+
+<Base title={title} description={description} path={path} ogImage="/images/logo-mark.png" jsonLd={jsonLd}>
+  <section class="section" style="padding-top: clamp(2rem, 5vw, 3rem);">
+    <div class="wrap article" style="max-width:860px;">
+      <Breadcrumbs items={[{ label: 'Accueil', href: '/' }, { label: h1 }]} />
+      <h1>{h1}</h1>
+      <p style="color:var(--ink-3); font-size:0.92rem;">Dernière mise à jour : {UPDATED}</p>
+
+      <nav class="toc" aria-label="Sommaire">
+        <h2>Sommaire</h2>
+        <ol>
+          {sections.map((s) => <li><a href={`#${s.id}`}>{s.h2}</a></li>)}
+        </ol>
+      </nav>
+
+      {sections.map((s) => (
+        <section id={s.id} style="scroll-margin-top:90px;">
+          <h2>{s.h2}</h2>
+          <div class="answers" set:html={s.html} />
+        </section>
+      ))}
+
+      <p style="margin-top:2.4rem; font-size:0.92rem; color:var(--ink-3);">
+        Une question sur ce document ? <a href="/contact/">Contactez le support</a> — réponse en français {`24h/24`}.
+      </p>
+    </div>
+  </section>
+</Base>

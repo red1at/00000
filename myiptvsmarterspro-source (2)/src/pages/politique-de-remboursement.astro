@@ -1,0 +1,77 @@
+---
+import LegalPage from '../components/LegalPage.astro';
+import { CONTACT } from '../config/site';
+
+const CHIP = `<span class="todo-chip">à compléter avant publication</span>`;
+---
+
+<LegalPage
+  title="Politique de remboursement — 30 jours satisfait ou remboursé"
+  h1="Politique de remboursement"
+  description="Politique de remboursement IPTV Smarters Pro France : garantie 30 jours satisfait ou remboursé, conditions, procédure par e-mail et délais bancaires."
+  path="/politique-de-remboursement/"
+  sections={[
+    {
+      id: 's1',
+      h2: '1. Principe : 30 jours satisfait ou remboursé',
+      html: `<p><strong>Chaque commande d'abonnement est couverte par une garantie commerciale de 30 jours « satisfait ou remboursé », remboursement intégral, sans condition cachée.</strong></p>
+<p>La garantie court à compter de la date de livraison des identifiants par e-mail. Elle couvre l'insatisfaction globale du service : qualité de réception non conforme à vos attentes, catalogue insuffisant pour votre usage, incapacité technique persistante d'utiliser le service malgré l'accompagnement du support.</p>`,
+    },
+    {
+      id: 's2',
+      h2: '2. Conditions de la garantie',
+      html: `<p><strong>Le remboursement est intégral dès lors que la demande est formulée dans les 30 jours et que la ligne n'a pas fait l'objet d'un usage frauduleux.</strong></p>
+<ul>
+<li>Demande envoyée depuis l'adresse e-mail de commande, dans les 30 jours suivant la livraison ;</li>
+<li>Indication du numéro de commande (ou de l'identifiant de ligne) et du motif ;</li>
+<li>La garantie 30 jours est une garantie commerciale qui s'ajoute au droit de rétractation légal applicable aux contrats conclus à distance ;</li>
+<li>Les demandes répétées d'échanges (changement de formule) relèvent d'une demande commerciale, traitée sans frais, plutôt que d'un remboursement.</li>
+</ul>`,
+    },
+    {
+      id: 's3',
+      h2: '3. Procédure de demande',
+      html: `<p><strong>La procédure tient en un e-mail : ${CONTACT.email}, avec le numéro de commande et le motif.</strong></p>
+<ol>
+<li>Écrivez depuis l'adresse utilisée à la commande ;</li>
+<li>Indiquez le numéro de commande reçu par e-mail et le motif du remboursement ;</li>
+<li>Le support accuse réception et confirme l'éligibilité sous quelques heures ;</li>
+<li>La ligne est désactivée et le remboursement est déclenché.</li>
+</ol>
+<p>Aucune justification documentaire lourde n'est exigée : un motif simple suffit. Le support peut proposer un correctif technique avant remboursement si la demande relève d'un problème résolvable.</p>`,
+    },
+    {
+      id: 's4',
+      h2: '4. Délais de traitement',
+      html: `<p><strong>La demande est traitée sous quelques heures après réception ; le remboursement est effectif dans un délai bancaire standard.</strong></p>
+<ul>
+<li>Accusé de réception et validation : sous quelques heures, 24h/24 ;</li>
+<li>Déclenchement du remboursement : dans la foulée de la validation ;</li>
+<li>Réception des fonds selon votre banque : quelques jours ouvrés.</li>
+</ul>`,
+    },
+    {
+      id: 's5',
+      h2: '5. Modalités de retour du paiement',
+      html: `<p><strong>Le remboursement s'effectue par le moyen de paiement d'origine, au montant exact de la commande.</strong></p>
+<p>Carte bancaire : recréditation du compte par le prestataire de paiement. Autres moyens affichés au moment de la commande : remboursement selon les modalités standards de ce moyen. Aucun frais de dossier n'est déduit ; le remboursement est intégral.</p>`,
+    },
+    {
+      id: 's6',
+      h2: '6. Cas particuliers',
+      html: `<p><strong>Certaines situations relèvent d'un traitement spécifique, toujours favorable à l'abonné.</strong></p>
+<ul>
+<li><strong>Commande non livrée</strong> (identifiants non reçus malgré le support) : remboursement immédiat ;</li>
+<li><strong>Indisponibilité prolongée du service</strong> : compensation en durée d'abonnement au prorata, ou remboursement au prorata sur demande ;</li>
+<li><strong>Formules longues</strong> : la garantie s'applique à la formule complète ;</li>
+<li><strong>Au-delà de 30 jours</strong> : la garantie commerciale ne s'applique plus ; les incidents techniques relèvent alors du support et de la compensation en durée.</li>
+</ul>`,
+    },
+    {
+      id: 's7',
+      h2: '7. Contact',
+      html: `<p><strong>Toute demande de remboursement passe par l'adresse ${CONTACT.email}, joignable 24h/24 et 7j/7.</strong></p>
+<p>Les coordonnées complètes de l'éditeur figurent dans les conditions générales. L'éditeur du site est ${CHIP} (dénomination, siège, SIRET).</p>`,
+    },
+  ]}
+/>

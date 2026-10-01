@@ -1,0 +1,29 @@
+---
+import { CONTACT } from '../config/site';
+
+interface Props {
+  title?: string;
+  desc?: string;
+}
+const {
+  title = 'Prêt à profiter du meilleur IPTV Smarters Pro en France ?',
+  desc = 'Commandez votre abonnement IPTV Smarters Pro en 2 minutes : code envoyé instantanément par e-mail, +20 000 chaînes et +100 000 films et séries en HD, Full HD et 4K, support français 24/7. Une question avant de commander ? Notre équipe répond jour et nuit.',
+} = Astro.props;
+---
+
+<section class="section dark cv" id="final-cta">
+  <div class="wrap">
+    <div class="sec-head center">
+      <p class="eyebrow">Offre IPTV Smarters Pro</p>
+      <h2 class="mb-0">{title}</h2>
+      <p class="desc">{desc}</p>
+    </div>
+    <div class="center" style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+      <a class="btn btn-red" href="/#tarifs">Commander IPTV Smarters Pro</a>
+      <a class="btn btn-ghost" href={`/contact/`}>Contacter le support français</a>
+    </div>
+    <p class="center" style="margin-top:1.2rem; font-size:0.9rem;">
+      <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a> · {CONTACT.hours}
+    </p>
+  </div>
+</section>

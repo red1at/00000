@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config/site';
+---
+
+<Base
+  title="Page introuvable — abonnement IPTV Smarters Pro France 4K"
+  description="Cette page n'existe pas ou plus : retrouvez ici l'abonnement IPTV Smarters Pro France, les tarifs, la FAQ et tous les guides d'installation appareil par appareil."
+  path="/404"
+  noindex
+>
+  <section class="section">
+    <div class="wrap center" style="max-width:640px;">
+      <p class="eyebrow" style="margin-bottom:1rem;">Erreur 404</p>
+      <h1>Cette page a changé de chaîne</h1>
+      <p>
+        La page que vous cherchez n'existe pas ou a été déplacée. Reprenons le direct :
+        l'abonnement IPTV Smarters Pro, les tarifs, la FAQ et tous les guides sont à un clic.
+      </p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:1.6rem 0;">
+        <a class="btn btn-red" href="/">Retour à l'accueil</a>
+        <a class="btn btn-ghost" href="/#tarifs">Voir les tarifs</a>
+        <a class="btn btn-ghost" href="/faq/">FAQ</a>
+        <a class="btn btn-ghost" href="/blog/">Blog</a>
+        <a class="btn btn-ghost" href="/contact/">Contact</a>
+      </div>
+      <p style="font-size:0.92rem; color:var(--ink-3);">
+        Vous cherchiez un guide d'installation ? La <a href="/installation-iptv/">page des guides</a> couvre
+        tous les appareils, et le <a href="/blog/">blog</a> répond aux questions les plus courantes.
+      </p>
+    </div>
+  </section>
+</Base>

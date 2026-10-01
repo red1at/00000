@@ -1,0 +1,104 @@
+---
+import '../styles/global.css';
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/plus-jakarta-sans';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE, WIDGET_SCRIPT } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string; // canonical path, e.g. '/' or '/blog/slug/'
+  ogImage?: string;
+  hasOrder?: boolean; // include Signal widget.js
+  noindex?: boolean;
+  jsonLd?: Record<string, any>[] | Record<string, any>;
+}
+
+const { title, description, path, ogImage = '/images/og-default.png', hasOrder = false, noindex = false, jsonLd = [] } = Astro.props;
+
+const canonical = `${SITE.url}${path}`;
+const ogUrl = canonical;
+const ogImageAbs = `${SITE.url}${ogImage}`;
+const ldBlocks = Array.isArray(jsonLd) ? jsonLd : [jsonLd];
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex, nofollow" /> : (
+      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    )}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="fr" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <meta name="geo.region" content="FR" />
+    <meta name="geo.placename" content="France" />
+    <meta name="theme-color" content="#5711EF" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={ogUrl} />
+    <meta property="og:image" content={ogImageAbs} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE.focusKeyword} — ${SITE.name}`} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbs} />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    {ldBlocks.map((block) => <script type="application/ld+json" set:html={JSON.stringify(block)} />)}
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    {hasOrder && <script is:inline src={WIDGET_SCRIPT} defer></script>}
+    <script is:inline>
+      // Mobile nav + reveal-on-scroll (transform/opacity only, LCP never hidden)
+      (function () {
+        var burger = document.querySelector('.hamburger');
+        var links = document.querySelector('.nav-links');
+        if (burger && links) {
+          burger.addEventListener('click', function () {
+            links.classList.toggle('open');
+            burger.setAttribute('aria-expanded', links.classList.contains('open'));
+          });
+        }
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+            });
+          }, { rootMargin: '0px 0px -8% 0px' });
+          document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+        } else {
+          document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+        }
+      })();
+    </script>
+  </body>
+</html>

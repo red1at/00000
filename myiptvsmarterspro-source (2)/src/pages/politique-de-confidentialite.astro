@@ -1,0 +1,84 @@
+---
+import LegalPage from '../components/LegalPage.astro';
+import { CONTACT } from '../config/site';
+
+const CHIP = `<span class="todo-chip">à compléter avant publication</span>`;
+---
+
+<LegalPage
+  title="Politique de confidentialité — IPTV Smarters Pro France"
+  h1="Politique de confidentialité"
+  description="Politique de confidentialité du site IPTV Smarters Pro France : données collectées, finalités, durées de conservation, tiers, cookies et droits RGPD expliqués."
+  path="/politique-de-confidentialite/"
+  sections={[
+    {
+      id: 's1',
+      h2: '1. Responsable du traitement',
+      html: `<p><strong>Le responsable du traitement des données est l'éditeur du site : ${CHIP} (dénomination, siège social, SIRET, e-mail de contact).</strong></p>
+<p>Toute question relative à la présente politique et à l'exercice de vos droits s'adresse à ${CONTACT.email}. Le délégué à la protection des données, lorsqu'il est désigné, est joignable à la même adresse.</p>`,
+    },
+    {
+      id: 's2',
+      h2: '2. Données collectées',
+      html: `<p><strong>Le site collecte uniquement les données strictement nécessaires à la fourniture du service et à la relation client.</strong></p>
+<ul>
+<li><strong>Données de commande</strong> : adresse e-mail, formule choisie, identifiant de transaction ;</li>
+<li><strong>Données d'accès au service</strong> : identifiants de ligne générés (serveur, identifiant, mot de passe, MAC le cas échéant) ;</li>
+<li><strong>Données techniques</strong> : adresse IP, journaux de connexion, type d'appareil et d'application, à des fins d'exploitation et de support ;</li>
+<li><strong>Correspondance support</strong> : e-mails et messages (appareil, application, incident décrit).</li>
+</ul>
+<p>Aucune donnée de paiement n'est stockée sur le site : les paiements sont traités par un prestataire spécialisé.</p>`,
+    },
+    {
+      id: 's3',
+      h2: '3. Finalités et bases légales',
+      html: `<p><strong>Les données servent exclusivement à livrer le service, à facturer, à assurer le support technique et à respecter les obligations légales.</strong></p>
+<ul>
+<li>Exécution du contrat : livraison des identifiants, gestion de la ligne, assistance ;</li>
+<li>Intérêt légitime : sécurité du service, prévention de l'usage frauduleux des lignes ;</li>
+<li>Obligation légale : conservation des documents commerciaux et comptables.</li>
+</ul>
+<p>Aucune donnée n'est utilisée à des fins publicitaires ou de prospection sans consentement explicite, et aucune décision automatisée ne repose sur vos données.</p>`,
+    },
+    {
+      id: 's4',
+      h2: '4. Durées de conservation',
+      html: `<p><strong>Les données sont conservées le temps de la relation contractuelle, augmenté des durées légales de prescription, puis supprimées.</strong></p>
+<ul>
+<li>Identifiants de ligne : durée de l'abonnement, puis suppression ou anonymisation ;</li>
+<li>Données de commande et facturation : durée légale applicable aux documents commerciaux ;</li>
+<li>Journaux techniques : durée nécessaire à l'exploitation et à la sécurité du service ;</li>
+<li>Correspondance support : durée de la relation client.</li>
+</ul>`,
+    },
+    {
+      id: 's5',
+      h2: '5. Destinataires et tiers',
+      html: `<p><strong>Seuls les destinataires strictement nécessaires reçoivent vos données : prestataire de paiement, hébergeur, fournisseur d'envoi d'e-mails et équipe support.</strong></p>
+<ul>
+<li><strong>Prestataire de paiement</strong> : traitement sécurisé des transactions ;</li>
+<li><strong>Hébergeur</strong> : ${CHIP} (raison sociale et localisation des serveurs) ;</li>
+<li><strong>Transfert hors UE</strong> : le cas échéant, encadré par les clauses contractuelles types de la Commission européenne.</li>
+</ul>
+<p>Aucune vente, location ou cession de vos données personnelles à des tiers commerciaux n'est pratiquée.</p>`,
+    },
+    {
+      id: 's6',
+      h2: '6. Cookies',
+      html: `<p><strong>Le site n'utilise que les cookies et mécanismes strictement nécessaires à son fonctionnement technique.</strong></p>
+<p>Le site statique n'embarque aucun traceur publicitaire ni mesure d'audience tierce par défaut. Les pages du site peuvent contenir des liens externes (applications partenaires, stores) dont les politiques de confidentialité sont indépendantes. Si un outil de mesure d'audience était ajouté ultérieurement, il le serait en conformité avec la réglementation applicable, avec information préalable.</p>`,
+    },
+    {
+      id: 's7',
+      h2: '7. Sécurité',
+      html: `<p><strong>Les données sont protégées par des mesures techniques et organisationnelles adaptées : chiffrement des communications (HTTPS), restreinte des accès au support, mots de passe de lignes générés et uniques.</strong></p>
+<p>En cas de violation de données susceptible d'engendrer un risque élevé pour vos droits, vous seriez informé sans délai injustifié conformément à la réglementation, de même que l'autorité de contrôle compétente.</p>`,
+    },
+    {
+      id: 's8',
+      h2: '8. Vos droits (RGPD)',
+      html: `<p><strong>Vous disposez des droits d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité sur vos données.</strong></p>
+<p>Les demandes s'adressent à ${CONTACT.email} avec copie d'un justificatif d'identité si nécessaire. Le responsable du traitement répond dans un délai d'un mois. En cas de réponse insatisfaisante, une réclamation peut être adressée à la CNIL (Commission nationale de l'informatique et des libertés, autorité française de protection des données).</p>`,
+    },
+  ]}
+/>

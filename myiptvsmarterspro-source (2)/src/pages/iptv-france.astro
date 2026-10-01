@@ -1,0 +1,242 @@
+---
+import Base from '../layouts/Base.astro';
+import PlanCard from '../components/PlanCard.astro';
+import Faq from '../components/Faq.astro';
+import CtaStrip from '../components/CtaStrip.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE, PLANS, PRODUCT_PAGE_SLUGS, CONTACT } from '../config/site';
+
+const plan = (id: string) => PLANS.find((p) => p.id === id)!;
+
+const FAQ2 = [
+  { q: "Qu'est-ce qu'un abonnement IPTV France ?", a: "<strong>Un abonnement IPTV France est un forfait de télévision par internet qui diffuse les chaînes françaises et internationales sur vos appareils via le code IPTV.</strong> Notre formule IPTV France inclut +20 000 chaînes, +100 000 films et séries, la qualité HD à 4K et un support francophone 24/7." },
+  { q: "Quel est le meilleur abonnement IPTV France en 2026 ?", a: "<strong>Le meilleur abonnement IPTV France combine +20 000 chaînes stables, une VOD actualisée chaque semaine et un code livré en quelques minutes — notre formule 12 mois à 49,99 €.</strong> Le guide « meilleur abonnement IPTV France 2026 » du blog détaille chaque critère." },
+  { q: "Combien coûte un abonnement IPTV France ?", a: "<strong>De 29,99 € pour 3 mois à 79,99 € pour 24 mois : la formule 12 mois à 49,99 € revient à environ 4,16 € par mois.</strong> La formule 24 mois à 79,99 € descend le tarif à 3,33 € par mois." },
+  { q: "L'IPTV France fonctionne-t-il avec toutes les box internet ?", a: "<strong>Oui : fibre, ADSL, câble et même 4G/5G — 10 Mbit/s suffisent en Full HD et 25 Mbit/s en 4K.</strong> Aucun VPN n'est nécessaire, nos serveurs sont optimisés pour les connexions françaises." },
+  { q: "Quelles chaînes françaises sont incluses ?", a: "<strong>Toutes les chaînes TNT françaises, les chaînes sportives, cinéma, séries, info et jeunesse.</strong> La liste complète des chaînes IPTV est consultable sur notre page dédiée." },
+  { q: "Puis-je regarder l'IPTV France sur plusieurs appareils ?", a: "<strong>Oui : le même code IPTV fonctionne sur Smart TV, Fire Stick, Android, iPhone, PC et box.</strong> En formule 1 écran, un appareil lit à la fois ; l'alternance entre vos appareils est instantanée." },
+  { q: "Le paiement est-il sécurisé et la livraison immédiate ?", a: "<strong>Oui : le paiement est traité par notre plateforme sécurisée et votre code IPTV arrive par e-mail quelques minutes après la commande, 24h/24.</strong> Chaque e-mail inclut les guides d'installation pour vos appareils." },
+  { q: "Existe-t-il une garantie si le service ne me convient pas ?", a: "<strong>Oui : 30 jours satisfait ou remboursé sur toutes les formules IPTV France.</strong> Vous testez le service réellement avant de vous engager plus longtemps." },
+];
+
+const SEO_CHUNKS = [
+  {
+    h3: "Qu'est-ce que l'IPTV France exactement ?",
+    lead: "L'IPTV France désigne la diffusion des chaînes de télévision françaises et internationales par internet, sur vos appareils, via un abonnement et une application lecteur.",
+    body: "Contrairement au câble ou au satellite, l'IPTV utilise votre connexion internet existante : le signal arrive par le même réseau que vos vidéos en streaming. Il suffit d'un abonnement IPTV France et d'une application comme IPTV Smarters Pro pour transformer une Smart TV, un Fire Stick ou même un iPhone en poste de télévision complet — avec EPG, VOD et replay.",
+  },
+  {
+    h3: "Pourquoi l'IPTV France séduit-elle autant de foyers ?",
+    lead: "L'abonnement IPTV France coûte environ 4,16 € par mois en formule 12 mois, contre 30 à 60 € pour un abonnement câble classique.",
+    body: "À ce prix, le catalogue n'a rien de comparable : plus de 20 000 chaînes internationales contre quelques centaines en câble, une vidéothèque de 100 000 films et séries, et la liberté totale des appareils. La même ligne IPTV suit le foyer partout — salon, chambre, téléphone en déplacement — là où la box reste figée au mur.",
+  },
+  {
+    h3: "Code IPTV, application et appareils : comment tout se relie ?",
+    lead: "Votre abonnement IPTV France fournit un code IPTV Xtream (serveur + identifiant + mot de passe) que vous collez une fois dans l'application de votre choix.",
+    body: "L'application recommandée pour démarrer est IPTV Smarters Pro, gratuite et disponible sur la plupart des plateformes. Sur Smart TV Samsung et LG, les applications IBO Player ou Flix IPTV prennent le relais avec la même ligne. Le guide d'activation du code IPTV du blog détaille chaque cas appareil par appareil.",
+  },
+  {
+    h3: "Quel débit pour l'IPTV France en 4K ?",
+    lead: "25 Mbit/s suffisent pour la 4K et 10 Mbit/s pour le Full HD : tous les standards internet français passent sans difficulté.",
+    list: [
+      "Fibre : confort total, 4K fluide sur tous les appareils ;",
+      "ADSL : Full HD stable, 4K selon la distance du répartiteur ;",
+      "4G/5G : Full HD nomade, environ 1,5 Go de data par heure ;",
+      "Wi-Fi : privilégiez la bande 5 GHz dans les immeubles denses.",
+    ],
+  },
+  {
+    h3: "Comment choisir la bonne formule d'abonnement IPTV ?",
+    lead: "Choisissez la durée selon votre confiance (3 mois pour tester, 12 mois pour l'usage régulier, 24 mois pour l'économie) et le nombre d'écrans selon votre foyer.",
+    body: "La formule 12 mois est la plus choisie par les foyers français : elle équilibre le prix mensuel le plus bas hors 24 mois et un engagement raisonnable, avec la garantie 30 jours satisfait ou remboursé en filet de sécurité. Et comme le même code alterne librement entre la TV du salon et la tablette, toute la famille en profite.",
+  },
+];
+
+const title = 'IPTV France : abonnement IPTV pas cher HD 4K | iptv Smarters';
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE.url}/iptv-france/`,
+    name: 'IPTV France — abonnement IPTV premium',
+    description: 'Abonnement IPTV France premium : +20 000 chaînes, +100 000 films et séries, HD 4K, code instantané, support FR 24/7.',
+    url: `${SITE.url}/iptv-france/`,
+    inLanguage: 'fr-FR',
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    about: { '@id': `${SITE.url}/#product` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ2.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'IPTV France', item: `${SITE.url}/iptv-france/` },
+    ],
+  },
+];
+---
+
+<Base
+  title={title}
+  description="IPTV France : l'abonnement IPTV premium avec +20 000 chaînes françaises et internationales, +100 000 films, HD 4K, code instantané et support FR 24/7."
+  path="/iptv-france/"
+  ogImage="/images/og-default.png"
+  hasOrder
+  jsonLd={jsonLd}
+>
+  <section class="section dark" style="padding-top: clamp(2rem, 5vw, 3.4rem);">
+    <div class="wrap">
+      <Breadcrumbs items={[{ label: 'Accueil', href: '/' }, { label: 'IPTV France' }]} />
+      <div class="sec-head">
+        <p class="eyebrow">IPTV France · 2026</p>
+        <h1 style="color:#fff;">IPTV France : <span class="kw">l'abonnement IPTV</span> premium dès 4,16 €/mois</h1>
+        <p style="font-size:1.1rem; color:rgba(255,255,255,0.8); max-width:62ch;">
+          Toutes les chaînes françaises, le sport et un catalogue de +100 000 films et séries en HD, Full HD et 4K.
+          Code IPTV envoyé instantanément, support francophone 24/7 et 30 jours satisfait ou remboursé.
+        </p>
+        <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:1.4rem;">
+          <a class="btn btn-red" href="#formules">Voir les formules IPTV France</a>
+          <a class="btn btn-ghost" href="/installation-iptv/">Guides d'installation gratuits</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What IPTV France means for the buyer -->
+  <section class="section cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">Comprendre l'offre</p>
+        <h2>Ce que comprend votre <span class="kw">IPTV France</span></h2>
+        <p class="desc">Un abonnement IPTV complet : chaînes, VOD, qualité et accompagnement — sans matériel à acheter, sans engagement forcé.</p>
+      </div>
+      <div class="grid g4">
+        <div class="card reveal"><h3 style="font-size:1rem;">+20 000 chaînes live</h3><p style="margin:0; font-size:0.93rem;">TNT française complète, sport, cinéma, info, jeunesse et international.</p></div>
+        <div class="card reveal"><h3 style="font-size:1rem;">+100 000 films & séries</h3><p style="margin:0; font-size:0.93rem;">VOD actualisée chaque semaine avec pochettes, fiches et reprise de lecture.</p></div>
+        <div class="card reveal"><h3 style="font-size:1rem;">HD · Full HD · 4K</h3><p style="margin:0; font-size:0.93rem;">Qualité adaptative anti-freeze, stable aux heures de pointe, 25 Mbit/s suffisent en 4K.</p></div>
+        <div class="card reveal"><h3 style="font-size:1rem;">Tous vos appareils</h3><p style="margin:0; font-size:0.93rem;">Smart TV, Fire Stick, Android TV, iPhone, iPad, PC et box — un seul code, tout l'écosystème.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Compact pricing -->
+  <section class="section soft-blue cv" id="formules">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">Tarifs</p>
+        <h2>Les formules d'<span class="kw">abonnement IPTV France</span></h2>
+        <p class="desc">Cinq formules du test de 3 mois au 24 mois économique. Chaque commande inclut le code instantané, les guides et le support 24/7.</p>
+      </div>
+      <div class="grid" style="grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(0.9rem, 1.8vw, 1.2rem);">
+        {PLANS.map((p) => (
+          <PlanCard plan={p} showLink={!!PRODUCT_PAGE_SLUGS[p.id]} productUrl={PRODUCT_PAGE_SLUGS[p.id]} ctaLabel={`Commander — ${p.months} mois${p.screens > 1 ? ` · ${p.screens} écrans` : ''}`} />
+        ))}
+      </div>
+      <style>
+        @media (max-width: 1080px) { #formules .grid { grid-template-columns: repeat(3, minmax(0,1fr)) !important; } }
+        @media (max-width: 780px) { #formules .grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; } }
+        @media (max-width: 540px) { #formules .grid { grid-template-columns: minmax(0,1fr) !important; } }
+      </style>
+    </div>
+  </section>
+
+  <!-- Benefits 3-4 -->
+  <section class="section cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">Pourquoi notre IPTV France</p>
+        <h2>Un <span class="kw">IPTV France</span> pensé pour les téléspectateurs exigeants</h2>
+      </div>
+      <div class="grid g3">
+        <div class="card reveal"><h3>Activation en quelques minutes</h3><p style="margin:0;">Commande, e-mail, code collé dans l'application : la TV démarre presque immédiatement, à toute heure du jour et de la nuit.</p></div>
+        <div class="card reveal"><h3>Support français 24/7</h3><p style="margin:0;">Installation, configuration, dépannage : l'équipe répond en français par e-mail et WhatsApp, jour et nuit.</p></div>
+        <div class="card reveal"><h3>30 jours satisfait ou remboursé</h3><p style="margin:0;">Testez réellement le service pendant un mois ; remboursement intégral si la qualité ne vous convient pas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works 3 steps -->
+  <section class="section soft cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">Comment ça marche</p>
+        <h2>Votre <span class="kw">IPTV France</span> actif en 3 étapes</h2>
+      </div>
+      <div class="grid g3">
+        <div class="card reveal"><p style="font-family:var(--font-display); font-weight:800; font-size:1.9rem; color:var(--red); margin:0;">01</p><h3>Commandez votre formule</h3><p style="margin:0;">De 29,99 € (3 mois) à 79,99 € (24 mois) : le paiement est sécurisé et la livraison automatique.</p></div>
+        <div class="card reveal"><p style="font-family:var(--font-display); font-weight:800; font-size:1.9rem; color:var(--red); margin:0;">02</p><h3>Recevez votre code IPTV</h3><p style="margin:0;">L'e-mail arrive quelques minutes plus tard avec les identifiants Xtream et les guides par appareil.</p></div>
+        <div class="card reveal"><p style="font-family:var(--font-display); font-weight:800; font-size:1.9rem; color:var(--red); margin:0;">03</p><h3>Regardez en HD et 4K</h3><p style="margin:0;">Collez le code dans <a href="/">IPTV Smarters Pro</a> : chaînes, VOD et EPG se chargent instantanément.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison table -->
+  <section class="section cv">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Comparatif</p>
+        <h2><span class="kw">IPTV France</span> ou les offres traditionnelles ?</h2>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="tbl">
+          <thead><tr><th>Critère</th><th>Abonnement IPTV France</th><th>Autres fournisseurs IPTV</th><th>Câble / satellite</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Critère">Prix mensuel moyen</td><td data-label="IPTV France"><strong>4,16 €</strong> (12 mois)</td><td data-label="Autres IPTV">8-15 €</td><td data-label="Câble">30-60 €</td></tr>
+            <tr><td data-label="Critère">Chaînes live</td><td data-label="IPTV France"><strong>+20 000</strong></td><td data-label="Autres IPTV">5 000-15 000</td><td data-label="Câble">200-300</td></tr>
+            <tr><td data-label="Critère">VOD incluse</td><td data-label="IPTV France"><strong>+100 000 titres</strong></td><td data-label="Autres IPTV">Variable</td><td data-label="Câble">Options payantes</td></tr>
+            <tr><td data-label="Critère">Appareils couverts</td><td data-label="IPTV France">TV, stick, mobile, PC</td><td data-label="Autres IPTV">Souvent partiel</td><td data-label="Câble">Box du salon</td></tr>
+            <tr><td data-label="Critère">Engagement</td><td data-label="IPTV France">Aucun + 30 j remboursé</td><td data-label="Autres IPTV">Variable</td><td data-label="Câble">12-24 mois</td></tr>
+            <tr><td data-label="Critère">Support en français</td><td data-label="IPTV France"><strong>24/7</strong></td><td data-label="Autres IPTV">Restreint</td><td data-label="Câble">Heures ouvrées</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:1rem; font-size:0.95rem;">Pour choisir l'application lecteur, lisez notre <a href="/blog/iptv-smarters-pro-vs-tivimate/"><strong>comparatif IPTV Smarters Pro ou TiviMate</strong></a> ; pour activer vos identifiants, le guide <a href="/blog/code-iptv-activation/"><strong>code IPTV</strong></a> vous attend sur le blog.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section soft cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">FAQ</p>
+        <h2>Questions fréquentes sur l'<span class="kw">IPTV France</span></h2>
+      </div>
+      <div class="answers" style="max-width:860px; margin:0 auto;">
+        <Faq items={FAQ2} />
+      </div>
+    </div>
+  </section>
+
+  <!-- SEO section -->
+  <section class="section cv" id="guide-iptv-france">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Guide IPTV France</p>
+        <h2>Tout savoir sur l'<span class="kw">IPTV France</span></h2>
+        <p class="desc">Définitions, prix, débits, appareils et choix de formule : le guide complet de la télévision par internet en France.</p>
+      </div>
+      <div class="answers" style="max-width:800px;">
+        {SEO_CHUNKS.map((c) => (
+          <div class="chunk">
+            <h3>{c.h3}</h3>
+            <p><strong>{c.lead}</strong></p>
+            {c.body && <p>{c.body}</p>}
+            {c.list && <ul>{c.list.map((li) => <li>{li}</li>)}</ul>}
+          </div>
+        ))}
+        <p>Pour approfondir : le guide <a href="/blog/meilleur-abonnement-iptv-france/"><strong>du meilleur abonnement IPTV France 2026</strong></a> et les <a href="/installation-iptv/"><strong>guides d'installation</strong></a> de chaque appareil.</p>
+      </div>
+    </div>
+  </section>
+
+  <CtaStrip />
+</Base>

@@ -1,0 +1,319 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import CtaStrip from '../components/CtaStrip.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../config/site';
+
+const DEVICES = [
+  {
+    id: 'samsung-lg',
+    name: 'Smart TV Samsung & LG',
+    app: 'IBO Player (recommandé)',
+    img: '/images/a-smarttv.png',
+    imgAlt: "Installer l'IPTV sur Smart TV Samsung et LG avec IBO Player",
+    article: '/blog/installer-iptv-smarters-pro-smart-tv/',
+    steps: [
+      "Appuyez sur **Home** et ouvrez le **Samsung Smart Hub** ou le **LG Content Store**.",
+      "Recherchez **IBO Player**, **Flix IPTV** ou **SmartOne**, puis cliquez sur **Installer**.",
+      "Ouvrez l'application : notez l'**adresse MAC** et la **Device Key** affichées.",
+      "Sur votre téléphone, connectez-vous à la page d'activation de l'application (iboplayer.com/device/login).",
+      "Saisissez la MAC et la Device Key, puis collez l'**URL du serveur** et vos identifiants d'abonnement.",
+      "Sur la TV, appuyez sur **Recharger** : chaînes et VOD apparaissent.",
+    ],
+    problem: [
+      ['Application absente du store', 'Modèle trop ancien ou store non à jour', 'Ajoutez un Fire Stick en HDMI pour IPTV Smarters Pro natif'],
+      ['Playlist ne charge pas', 'MAC/Device Key mal saisie', 'Recopiez la MAC exactement, sans espace, et rechargez'],
+    ],
+  },
+  {
+    id: 'fire-stick',
+    name: 'Amazon Fire TV Stick',
+    app: 'IPTV Smarters Pro (recommandé)',
+    img: '/images/a-firestick.png',
+    imgAlt: "Installer IPTV Smarters Pro sur Fire Stick avec Downloader",
+    article: '/blog/installer-iptv-smarters-pro-fire-stick/',
+    steps: [
+      "Dans **Paramètres > Mon Fire TV > Options pour développeurs**, activez **Applications de sources inconnues**.",
+      "Installez **Downloader** depuis l'Appstore et ouvrez-le.",
+      "Saisissez l'URL officielle d'IPTV Smarters Pro et téléchargez l'**APK**.",
+      "Cliquez sur **Installer** puis ouvrez l'application.",
+      "Choisissez **Se connecter avec Xtream Codes API**.",
+      "Collez l'**URL du serveur**, l'**identifiant** et le **mot de passe** reçus par e-mail.",
+      "Validez : live, films et séries se chargent automatiquement.",
+    ],
+    problem: [
+      ['« Login failed »', 'URL avec /get.php ou espace caché', 'Recopiez le serveur proprement et retapez la fin des champs'],
+      ['Image noire avec son', 'Décodeur SW', 'Paramètres > Lecteur > décodeur HW, ou lecteur externe VLC'],
+    ],
+  },
+  {
+    id: 'android-tv',
+    name: 'Android TV / box / Google TV',
+    app: 'IPTV Smarters Pro (recommandé)',
+    img: '/images/a-androidtv.png',
+    imgAlt: "Configurer IPTV Smarters Pro sur Android TV et box",
+    article: '/blog/configurer-iptv-smarters-pro-android-tv/',
+    steps: [
+      "Ouvrez le **Google Play Store** de votre box ou TV Android.",
+      "Recherchez **IPTV Smarters Pro** et cliquez sur **Installer**.",
+      "Ouvrez l'application et sélectionnez **Ajouter un utilisateur**.",
+      "Choisissez **Se connecter avec Xtream Codes API**.",
+      "Renseignez l'**URL du serveur**, l'**identifiant** et le **mot de passe**.",
+      "Validez et patientez le chargement des chaînes et de la VOD.",
+    ],
+    problem: [
+      ['App introuvable au Play Store', 'Box non certifiée Google', "Installez l'APK en mode développeur (sources inconnues)"],
+      ['Saccades en 4K', 'Wi-Fi 2,4 GHz saturé', 'Passez en 5 GHz ou câble Ethernet, décodeur HW'],
+    ],
+  },
+  {
+    id: 'iphone-ipad',
+    name: 'iPhone / iPad / Apple TV',
+    app: 'IPTV Smarters Pro (recommandé)',
+    img: '/images/a-iphone.png',
+    imgAlt: "Regarder IPTV Smarters Pro sur iPhone et iPad",
+    article: '/blog/regarder-iptv-smarters-pro-iphone/',
+    steps: [
+      "Ouvrez l'**App Store** et recherchez **IPTV Smarters Pro**.",
+      "Appuyez sur **Obtenir** puis ouvrez l'application.",
+      "Touchez **Add User** et choisissez **Login with Xtream Codes API**.",
+      "Renseignez le profil, l'**URL du serveur**, l'**identifiant** et le **mot de passe**.",
+      "Touchez **Add User** : le live et la VOD s'ouvrent instantanément.",
+    ],
+    problem: [
+      ['Vidéo sans son', 'Mode silence iOS actif', "Basculez le commutateur latéral de l'iPhone"],
+      ['Cast introuvable', 'Réseaux Wi-Fi différents', "Placez l'iPhone et la TV sur le même réseau"],
+    ],
+  },
+  {
+    id: 'pc-mac',
+    name: 'PC Windows / Mac',
+    app: 'IPTV Smarters Pro (desktop)',
+    img: '/images/a-pc.png',
+    imgAlt: "Installer IPTV Smarters Pro sur PC Windows et Mac",
+    article: '/blog/installer-iptv-smarters-pro-pc/',
+    steps: [
+      "Téléchargez le client officiel **Windows (.exe)** ou **macOS (.dmg)** depuis le site de l'éditeur.",
+      "Lancez l'installation et ouvrez **IPTV Smarters Pro**.",
+      "Cliquez sur **Add User** puis **Login with Xtream Codes API**.",
+      "Collez l'**URL du serveur**, l'**identifiant** et le **mot de passe**.",
+      "Validez, puis activez l'**accélération matérielle** dans les réglages.",
+    ],
+    problem: [
+      ['« Login failed » malgré un bon code', "Pare-feu Windows bloque l'app", 'Autorisez IPTV Smarters Pro dans le pare-feu'],
+      ['4K saccadée', 'Accélération GPU inactive', "Activez l'accélération matérielle et fermez les onglets lourds"],
+    ],
+  },
+  {
+    id: 'phone-android',
+    name: 'Smartphone Android',
+    app: 'IPTV Smarters Pro (mobile)',
+    img: '/images/a-iphone.png',
+    imgAlt: "Installer l'application IPTV sur smartphone Android",
+    article: '/blog/regarder-iptv-smarters-pro-iphone/',
+    steps: [
+      "Ouvrez le **Play Store** et installez **IPTV Smarters Pro**.",
+      "Ouvrez l'application et sélectionnez **Add User**.",
+      "Choisissez **Login with Xtream Codes API**.",
+      "Renseignez l'**URL du serveur** et vos identifiants.",
+      "Validez, puis diffusez vers la TV via **Cast** si besoin.",
+    ],
+    problem: [
+      ['Data mobile explose', 'Lecture 4K en 4G/5G', "Limitez la qualité à la HD dans les réglages de l'app"],
+    ],
+  },
+];
+
+// markdown-lite bold: **text** -> <strong>text</strong> (defined here, not in the template,
+// because a closing tag literal inside a template expression breaks the Astro compiler)
+const md = (s: string) => s
+  .split('**')
+  .map((part, i) => (i % 2 ? `<strong>${part}</strong>` : part))
+  .join('');
+
+const APPS_LINKED = [
+  ['IPTV Smarters Pro', 'La référence multi-plateformes', '/images/app-smarters.png'],
+  ['TiviMate', 'La puissance EPG sur Android TV', '/images/app-tivimate.png'],
+  ['IBO Player', 'Le choix Smart TV Samsung/LG', '/images/app-ibo.png'],
+  ['Flix IPTV', 'Activation MAC simple', '/images/app-flix.png'],
+];
+
+const SPEED = {
+  head: ['Qualité', 'Débit minimal', 'Débit recommandé', 'Data par heure'],
+  rows: [
+    ['SD', '3 Mbit/s', '5 Mbit/s', '≈ 0,7 Go'],
+    ['HD (720p)', '5 Mbit/s', '6-10 Mbit/s', '≈ 1 Go'],
+    ['Full HD (1080p)', '10 Mbit/s', '10-15 Mbit/s', '≈ 1,5 Go'],
+    ['4K UHD', '25 Mbit/s', '25-40 Mbit/s', '≈ 3-7 Go'],
+  ],
+};
+
+const FAQ_T = [
+  { q: "Combien de temps prend l'installation de l'IPTV ?", a: "<strong>Entre 5 et 10 minutes par appareil, code IPTV en main : téléchargement de l'application, connexion Xtream Codes, réglages de lecture.</strong> Nos guides pas à pas accompagnent chaque étape avec les libellés exacts des menus." },
+  { q: "Faut-il des connaissances techniques pour installer l'IPTV ?", a: "<strong>Non : chaque installation se résume à installer une application et coller trois informations.</strong> Si un blocage survient, le support français répond 24/7 et prend la main à distance si nécessaire." },
+  { q: "Quelle application IPTV choisir pour débuter ?", a: "<strong>IPTV Smarters Pro sur tous les appareils compatibles Android/iOS/PC, IBO Player ou Flix IPTV sur Smart TV Samsung et LG.</strong> Notre comparatif applications aide à affiner selon votre usage." },
+  { q: "Comment fonctionne la connexion Xtream Codes ?", a: "<strong>Vous collez l'URL du serveur, votre identifiant et votre mot de passe dans l'application : la connexion active l'EPG, la VOD et le replay.</strong> Le format M3U reste possible mais moins confortable." },
+  { q: "Puis-je installer l'IPTV sur tous mes appareils en même temps ?", a: "<strong>Oui : le même code IPTV s'installe sur autant d'appareils que vous voulez, avec un flux actif à la fois — l'alternance entre vos appareils est instantanée.</strong>" },
+  { q: "Que faire si l'installation bloque malgré le guide ?", a: "<strong>Contactez le support français 24/7 avec trois informations : appareil, application, message exact.</strong> Neuf incidents d'installation sur dix se résolvent en un seul échange." },
+];
+
+const howToJsonLd = DEVICES.slice(0, 4).map((d) => ({
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: `Installer l'IPTV sur ${d.name}`,
+  description: `Guide d'installation IPTV Smarters Pro sur ${d.name} : étapes, application recommandée (${d.app}) et dépannage.`,
+  totalTime: 'PT10M',
+  tool: [{ '@type': 'HowToTool', name: d.app }],
+  step: d.steps.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: `Étape ${i + 1}`,
+    text: s.replace(/\*\*/g, ''),
+  })),
+}));
+
+const jsonLd = [
+  ...howToJsonLd,
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_T.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Guides installation IPTV', item: `${SITE.url}/installation-iptv/` },
+    ],
+  },
+];
+---
+
+<Base
+  title="Guides installation IPTV Smarters Pro : tous appareils 2026"
+  description="Guides d'installation IPTV en français : Smart TV Samsung et LG, Fire Stick, Android TV, iPhone et PC — étapes exactes, applications, dépannage du code IPTV."
+  path="/installation-iptv/"
+  ogImage="/images/a-androidtv.png"
+  jsonLd={jsonLd}
+>
+  <section class="section soft" style="padding-top: clamp(2rem, 5vw, 3.2rem);">
+    <div class="wrap">
+      <Breadcrumbs items={[{ label: 'Accueil', href: '/' }, { label: 'Guides installation IPTV' }]} />
+      <div class="sec-head center">
+        <p class="eyebrow">Tutoriels officiels</p>
+        <h1>Guides d'installation <span class="kw">IPTV Smarters Pro</span> : tous vos appareils</h1>
+        <p class="desc">
+          Sur quel appareil voulez-vous regarder l'IPTV ? Choisissez votre écran ci-dessous :
+          chaque guide donne les étapes exactes, l'application recommandée et les solutions aux blocages fréquents.
+        </p>
+      </div>
+      <div class="chips-row" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+        {DEVICES.map((d) => (
+          <a class="chip" href={`#${d.id}`} style="text-decoration:none; border-color: rgba(239,65,53,.35); background:var(--red-soft); color:var(--red-dark);">
+            <span class="dot"></span>{d.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {DEVICES.map((d) => (
+    <section class="section cv" id={d.id} style="scroll-margin-top: 90px;">
+      <div class="wrap">
+        <div class="sec-head">
+          <p class="eyebrow">{d.app}</p>
+          <h2>Installer l'IPTV sur <span class="kw">{d.name}</span></h2>
+          <p class="desc">Application recommandée : {d.app}. Comptez 5 à 10 minutes avec votre code IPTV à portée de main.</p>
+        </div>
+        <div class="grid g2" style="align-items:start; gap:1.6rem;">
+          <div class="card">
+            <h3>Étapes d'installation</h3>
+            <ol style="padding-left:1.3rem; margin:0.6rem 0 0;">
+              {d.steps.map((s) => (<li style="margin-bottom:0.55rem;" set:html={md(s)} />))}
+            </ol>
+            <p style="margin:1rem 0 0; font-size:0.93rem;">
+              Guide complet : <a href={d.article}><strong>tutoriel détaillé {d.name}</strong></a>.
+            </p>
+          </div>
+          <div>
+            <img src={d.img} alt={d.imgAlt} width="1344" height="768" loading="lazy" style="border-radius:var(--r-card); box-shadow:var(--shadow-2); margin-bottom:1rem;" />
+            <div class="card">
+              <h3>Problème → solution</h3>
+              <div style="overflow-x:auto;">
+                <table class="tbl">
+                  <thead><tr><th>Problème</th><th>Cause</th><th>Solution</th></tr></thead>
+                  <tbody>
+                    {d.problem.map((p) => (
+                      <tr>
+                        <td data-label="Problème">{p[0]}</td>
+                        <td data-label="Cause">{p[1]}</td>
+                        <td data-label="Solution">{p[2]}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section soft cv" id="applications">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">Applications</p>
+        <h2>Les meilleures applications pour votre <span class="kw">IPTV Smarters Pro</span></h2>
+        <p class="desc">Quatre lecteurs couvrent tous les appareils : le <a href="/blog/iptv-smarters-pro-vs-tivimate/">comparatif complet</a> aide à choisir selon votre usage.</p>
+      </div>
+      <div class="grid g4">
+        {APPS_LINKED.map(([name, note, img]) => (
+          <div class="card center">
+            <img src={img} alt={`Application ${name} — installation IPTV Smarters Pro`} width="96" height="96" loading="lazy" style="width:84px; height:84px; margin:0 auto 0.8rem; border-radius:20px;" />
+            <h3 style="font-size:1.02rem;">{name}</h3>
+            <p style="font-size:0.88rem; color:var(--ink-3); margin:0;">{note}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section cv" id="debits">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Connexion</p>
+        <h2>Quel débit pour l'<span class="kw">IPTV Smarters Pro</span> en 4K ?</h2>
+      </div>
+      <div style="overflow-x:auto; max-width:820px;">
+        <table class="tbl">
+          <thead><tr>{SPEED.head.map((h) => <th scope="col">{h}</th>)}</tr></thead>
+          <tbody>
+            {SPEED.rows.map((r) => <tr>{r.map((c) => <td>{c}</td>)}</tr>)}
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:1rem;">Ethernet reste l'idéal (&lt; 1 ms de latence) ; le Wi-Fi 5 GHz convient dès 2 m de la box. En cas de coupures du soir, le guide <a href="/blog/iptv-smarters-pro-ne-fonctionne-pas/"><strong>IPTV Smarters Pro ne fonctionne plus</strong></a> identifie la cause en 5 minutes.</p>
+    </div>
+  </section>
+
+  <section class="section soft cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">FAQ installation</p>
+        <h2>Questions fréquentes sur l'installation <span class="kw">IPTV Smarters Pro</span></h2>
+      </div>
+      <div class="answers" style="max-width:860px; margin:0 auto;">
+        <Faq items={FAQ_T} />
+      </div>
+    </div>
+  </section>
+
+  <CtaStrip />
+</Base>

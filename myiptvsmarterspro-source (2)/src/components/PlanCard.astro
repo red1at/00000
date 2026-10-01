@@ -1,0 +1,51 @@
+---
+import { PLANS, type Plan } from '../config/site';
+
+interface Props {
+  plan: Plan;
+  compact?: boolean;
+  ctaLabel?: string;
+  showLink?: boolean; // link to product page instead of button (home pricing block)
+  productUrl?: string;
+}
+const { plan, ctaLabel, showLink = false, productUrl } = Astro.props;
+
+// Économie vs le prix mensuel de la formule 3 mois (référence du catalogue)
+const base = PLANS[0];
+const save = plan.months > base.months ? Math.round((1 - plan.priceNumber / plan.months / (base.priceNumber / base.months)) * 100) : 0;
+
+const features = [
+  '+20 000 chaînes live',
+  '+100 000 films & séries VOD',
+  'Qualité HD · Full HD · 4K',
+  'Code actif en quelques minutes',
+  'Compatible IPTV Smarters Pro',
+  'Support français 24/7 · 30 j remboursé',
+];
+---
+
+<article class={`plan${plan.popular ? ' popular' : ''}`}>
+  {plan.badge && <span class="badge">{plan.badge}</span>}
+  <p class="plan-name">{plan.months} mois</p>
+  <p class="plan-sub">{plan.months >= 12 ? 'notre formule star' : 'sans engagement'}</p>
+  <p class="price">
+    {plan.price} <small>TTC</small>
+    {save > 0 && <span class="price-save">-{save}%</span>}
+  </p>
+  <span class="permo">soit {plan.perMonth}</span>
+  <ul>
+    {features.map((f) => (
+      <li>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>{f}</span>
+      </li>
+    ))}
+  </ul>
+  {showLink && productUrl ? (
+    <a class="btn btn-primary" href={productUrl}>Voir l'offre {plan.months} mois →</a>
+  ) : (
+    <button type="button" class="btn btn-red" data-iptv-form={plan.formId}>
+      {ctaLabel ?? `Commander ${plan.months} mois`}
+    </button>
+  )}
+</article>

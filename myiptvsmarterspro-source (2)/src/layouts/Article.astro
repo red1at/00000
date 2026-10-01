@@ -1,0 +1,196 @@
+---
+import Base from './Base.astro';
+import Faq from '../components/Faq.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { getCollection } from 'astro:content';
+import { SITE, AUTHOR, PLANS, PROMISES } from '../config/site';
+
+interface Props {
+  post: {
+    id: string;
+    data: {
+      title: string;
+      description: string;
+      image: string;
+      imageAlt: string;
+      pubDate: Date;
+      updatedDate?: Date;
+      directAnswer: string;
+      faq: { q: string; a: string }[];
+      related: string[];
+      keywords: string[];
+    };
+  };
+}
+
+const { post } = Astro.props;
+const d = post.data;
+
+// Render the markdown body to a string so we can build the TOC from real heading ids
+const bodyHtml = await Astro.slots.render('default');
+const h2regex = /<h2 id="([^"]+)"[^>]*>(.*?)<\/h2>/g;
+const toc: { id: string; text: string }[] = [];
+let m: RegExpExecArray | null;
+while ((m = h2regex.exec(bodyHtml)) !== null) {
+  toc.push({ id: m[1], text: m[2].replace(/<[^>]+>/g, '').trim() });
+}
+
+const words = bodyHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+const readingMin = Math.max(3, Math.round(words / 210));
+
+const dateFmt = (dt: Date) =>
+  dt.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const blogUrl = `${SITE.url}/blog/${post.id}/`;
+const heroImg = `${SITE.url}${d.image}`;
+
+// Related articles
+const allPosts = await getCollection('blog');
+const relatedPosts = d.related
+  .map((slug) => allPosts.find((p) => p.id === slug))
+  .filter(Boolean)
+  .slice(0, 3) as typeof allPosts;
+
+const baseTitle = d.seoTitle ?? d.title;
+const title = baseTitle.length + 25 <= 70 ? `${baseTitle} | ${SITE.name}` : baseTitle;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': blogUrl,
+    headline: d.title,
+    description: d.description,
+    image: heroImg,
+    inLanguage: 'fr-FR',
+    datePublished: d.pubDate.toISOString(),
+    dateModified: (d.updatedDate ?? d.pubDate).toISOString(),
+    wordCount: words,
+    author: {
+      '@type': 'Person',
+      name: AUTHOR.name,
+      jobTitle: AUTHOR.role,
+      description: AUTHOR.bio,
+      image: `${SITE.url}${AUTHOR.photo}`,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE.name,
+      url: SITE.url,
+      logo: { '@type': 'ImageObject', url: `${SITE.url}/images/logo-mark.png` },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': blogUrl },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE.url}/blog/` },
+      { '@type': 'ListItem', position: 3, name: d.title, item: blogUrl },
+    ],
+  },
+  ...(d.faq.length
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: d.faq.map((f) => ({
+            '@type': 'Question',
+            name: f.q,
+            acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+          })),
+        },
+      ]
+    : []),
+];
+---
+
+<Base title={title} description={d.description} path={`/blog/${post.id}/`} ogImage={d.image} jsonLd={jsonLd}>
+  <article class="section">
+    <div class="wrap article">
+      <Breadcrumbs items={[{ label: 'Accueil', href: '/' }, { label: 'Blog', href: '/blog/' }, { label: d.title }]} />
+
+      <h1>{d.title}</h1>
+      <div class="meta-row">
+        <span class="author-chip">
+          <img src={AUTHOR.photo} alt={`${AUTHOR.name} — ${AUTHOR.role}`} width="30" height="30" />
+          {AUTHOR.name}
+        </span>
+        <span>Publié le {dateFmt(d.pubDate)}</span>
+        {d.updatedDate && <span>· Mis à jour le {dateFmt(d.updatedDate)}</span>}
+        <span>· {readingMin} min de lecture</span>
+      </div>
+
+      <img
+        src={d.image}
+        alt={d.imageAlt}
+        width="1344" height="768"
+        fetchpriority="high"
+        style="margin: 1.6rem 0 0; border-radius: var(--r-card); box-shadow: var(--shadow-2);"
+      />
+
+      <div class="direct-answer" set:html={`<strong>Réponse rapide :</strong> ${d.directAnswer}`} />
+
+      {toc.length > 1 && (
+        <nav class="toc" aria-label="Sommaire de l'article">
+          <h2>Sommaire</h2>
+          <ol>
+            {toc.map((t) => (
+              <li><a href={`#${t.id}`}>{t.text}</a></li>
+            ))}
+          </ol>
+        </nav>
+      )}
+
+      <div class="prose answers" set:html={bodyHtml} />
+
+      <aside class="offer-card">
+        <h3>Commander votre abonnement IPTV Smarters Pro</h3>
+        <p>
+          {PLANS.map((p) => `${p.name} à ${p.price}`).join(' · ')}. Code envoyé instantanément par e-mail,
+          {PLANS[2].screens === 1 ? ' 1 écran' : ''} 30 jours satisfait ou remboursé et support français 24/7.
+        </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="btn btn-red" href="/#tarifs">Voir les tarifs IPTV</a>
+          <a class="btn btn-ghost" href="/installation-iptv/">Guides d'installation</a>
+        </div>
+        <p style="margin:0.8rem 0 0; font-size:0.88rem; color:rgba(255,255,255,0.6);">
+          {PROMISES[0].title} · {PROMISES[1].title}
+        </p>
+      </aside>
+
+      {relatedPosts.length > 0 && (
+        <section class="mt-2">
+          <h2>Articles liés à l'IPTV Smarters Pro</h2>
+          <div class="grid g3">
+            {relatedPosts.map((rp) => (
+              <a class="card" href={`/blog/${rp.id}/`} style="text-decoration:none;">
+                <img src={rp.data.image} alt={rp.data.imageAlt} width="1344" height="768" loading="lazy" style="border-radius: 12px; margin-bottom: 0.8rem;" />
+                <h3 style="font-size:1.02rem;">{rp.data.title}</h3>
+                <p style="font-size:0.9rem; color:var(--ink-3); margin:0;">{rp.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {d.faq.length > 0 && (
+        <section class="mt-2">
+          <h2>Questions fréquentes</h2>
+          <Faq items={d.faq} />
+        </section>
+      )}
+
+      <aside class="author-box">
+        <img src={AUTHOR.photo} alt={`${AUTHOR.name}, ${AUTHOR.role} — ${SITE.name}`} width="74" height="74" loading="lazy" />
+        <div>
+          <h3 class="mb-0" style="font-size:1.05rem;">{AUTHOR.name}</h3>
+          <p style="margin:0.15rem 0 0.4rem; color:var(--red-dark); font-weight:700; font-size:0.88rem;">{AUTHOR.role}</p>
+          <p style="margin:0; font-size:0.93rem;">{AUTHOR.bio}</p>
+          <p style="margin:0.5rem 0 0; font-size:0.9rem;"><a href="/contact/">Contacter {AUTHOR.name.split(' ')[0]}</a></p>
+        </div>
+      </aside>
+    </div>
+  </article>
+</Base>

@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaStrip from '../components/CtaStrip.astro';
+import { SITE, CONTACT } from '../config/site';
+
+const title = `Contact et support IPTV Smarters Pro France 24/7 rapide`;
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    '@id': `${SITE.url}/contact/`,
+    name: `Contact ${SITE.name}`,
+    description: `Support IPTV Smarters Pro en français : e-mail avec copie en un clic, réponse en quelques minutes 24h/24 et 7j/7.`,
+    url: `${SITE.url}/contact/`,
+    inLanguage: 'fr-FR',
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    about: { '@id': `${SITE.url}/#organization` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Contact', item: `${SITE.url}/contact/` },
+    ],
+  },
+];
+---
+
+<Base
+  title={title}
+  description="Contactez le support IPTV Smarters Pro en français par e-mail : réponse en quelques minutes 24h/24 et 7j/7, avec le checklist des infos à préparer."
+  path="/contact/"
+  ogImage="/images/logo-mark.png"
+  jsonLd={jsonLd}
+>
+  <section class="section" style="padding-top: clamp(2.2rem, 5vw, 3.4rem);">
+    <div class="wrap">
+      <Breadcrumbs items={[{ label: 'Accueil', href: '/' }, { label: 'Contact' }]} />
+      <div class="sec-head center">
+        <p class="eyebrow">Support français 24/7</p>
+        <h1>Contactez le support <span class="kw">IPTV Smarters Pro</span></h1>
+        <p class="desc">
+          Une question sur votre abonnement, votre code IPTV ou une installation ? L'équipe répond
+          en français, jour et nuit, en quelques minutes.
+        </p>
+      </div>
+
+      <div class="grid g2" style="gap:1.4rem; max-width:920px; margin:0 auto;">
+        <div class="card center" style="padding:2rem 1.4rem;">
+          <p class="eyebrow" style="margin-bottom:1rem;">E-mail — copie en un clic</p>
+          <button id="copy-mail" class="btn btn-red" style="font-size:1.05rem; width:100%;" data-mail={CONTACT.email}>
+            {CONTACT.email} — copier
+          </button>
+          <p style="margin:1rem 0 0; font-size:0.92rem; color:var(--ink-3);">
+            Réponse en quelques minutes, {CONTACT.hours.toLowerCase()}.
+          </p>
+        </div>
+        <div class="card center" style="padding:2rem 1.4rem;">
+          <p class="eyebrow" style="margin-bottom:1rem;">WhatsApp</p>
+          <p style="font-family:var(--font-display); font-weight:800; font-size:1.3rem; color:var(--ink); margin-bottom:0.4rem;">WhatsApp support 24/7</p>
+          <p style="font-size:0.92rem; color:var(--ink-3); margin:0;">
+            Numéro fourni à la commande dans votre e-mail de confirmation —
+            activation, configuration et dépannage en direct.
+          </p>
+        </div>
+      </div>
+
+      <div class="card mt-2" style="max-width:920px; margin:1.4rem auto 0;">
+        <h2>Avant d'écrire : préparez ces 3 informations</h2>
+        <p>Elles permettent de résoudre 9 demandes sur 10 en un seul échange :</p>
+        <ul>
+          <li><strong>Votre appareil</strong> : modèle exact (Fire Stick 4K, Samsung TU7100, iPhone 13…) ;</li>
+          <li><strong>Votre application</strong> : IPTV Smarters Pro, IBO Player, TiviMate et sa version ;</li>
+          <li><strong>Le message ou le comportement exact</strong> : texte de l'erreur, ou description précise (« écran noir avec son », « login failed »…).</li>
+        </ul>
+        <p style="margin-bottom:0;">
+          Pour une question de commande : ajoutez le numéro de commande reçu par e-mail.
+          Pour un renouvellement : l'adresse e-mail utilisée lors de l'achat suffit.
+        </p>
+      </div>
+
+      <div class="grid g3 mt-2" style="max-width:920px; margin:1.4rem auto 0;">
+        <div class="card center">
+          <h3>Guides d'installation</h3>
+          <p style="font-size:0.92rem; margin:0 0 0.8rem;">Smart TV, Fire Stick, Android, iPhone, PC : tous nos pas à pas gratuits.</p>
+          <a class="btn btn-ghost" href="/installation-iptv/">Voir les guides</a>
+        </div>
+        <div class="card center">
+          <h3>Dépannage express</h3>
+          <p style="font-size:0.92rem; margin:0 0 0.8rem;">Login failed, écran noir, buffering : 12 solutions testées et classées.</p>
+          <a class="btn btn-ghost" href="/blog/iptv-smarters-pro-ne-fonctionne-pas/">Guide dépannage</a>
+        </div>
+        <div class="card center">
+          <h3>Questions fréquentes</h3>
+          <p style="font-size:0.92rem; margin:0 0 0.8rem;">Tarifs, livraison du code, qualité, écrans simultanés : les réponses des abonnés.</p>
+          <a class="btn btn-ghost" href="/faq/">Consulter la FAQ</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaStrip title="Prêt à commander votre abonnement IPTV ?" />
+</Base>
+
+<script is:inline>
+  (function () {
+    var b = document.getElementById('copy-mail');
+    if (!b) return;
+    b.addEventListener('click', function () {
+      var mail = b.getAttribute('data-mail');
+      var done = function () {
+        var t = b.textContent;
+        b.textContent = 'Adresse copiée ✓ ' + mail;
+        setTimeout(function () { b.textContent = t; }, 2200);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(mail).then(done, function () { window.location.href = 'mailto:' + mail; });
+      } else {
+        window.location.href = 'mailto:' + mail;
+      }
+    });
+  })();
+</script>

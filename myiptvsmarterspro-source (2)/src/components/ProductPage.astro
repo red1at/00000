@@ -1,0 +1,229 @@
+---
+import Base from '../layouts/Base.astro';
+import PlanCard from '../components/PlanCard.astro';
+import Faq from '../components/Faq.astro';
+import CtaStrip from '../components/CtaStrip.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE, PLANS, PRODUCT_PAGE_SLUGS, PROMISES, CONTACT } from '../config/site';
+
+interface Props { planId: string }
+const { planId } = Astro.props;
+const plan = PLANS.find((p) => p.id === planId)!;
+const otherPlans = PLANS.filter((p) => PRODUCT_PAGE_SLUGS[p.id] && p.id !== plan.id);
+const slug = PRODUCT_PAGE_SLUGS[planId];
+
+const is12 = planId === '12-mois';
+const is3 = planId === '3-mois';
+const is2s = planId === '12-mois-2-ecrans';
+
+const short = plan.name.replace('IPTV Smarters Pro ', '');
+const TITLE = `Abonnement IPTV ${short} — ${plan.price} | IPTV Smarters France`;
+const DESC = `${plan.name} à ${plan.price} : +20 000 chaînes, +100 000 films et séries en HD 4K, code IPTV envoyé en quelques minutes, et support FR 24/7 inclus.`;
+
+const INCLUDED = [
+  ['+20 000 chaînes live', 'TNT française, sport, cinéma, séries, info, jeunesse et 40+ pays.'],
+  ['+100 000 films & séries VOD', 'Catalogue actualisé chaque semaine, pochettes, fiches et reprise de lecture.'],
+  ['HD · Full HD · 4K', 'Qualité adaptative anti-freeze, stable aux heures de pointe.'],
+  [`${plan.screens} écran${plan.screens > 1 ? 's' : ''} simultané${plan.screens > 1 ? 's' : ''}`, `Votre ligne fonctionne sur tous vos appareils${plan.screens > 1 ? ' — deux flux en même temps' : ' — un flux à la fois'}.`],
+  ['EPG + replay', 'Guide TV automatique et catch-up sur les chaînes compatibles.'],
+  ['Support français 24/7', 'E-mail et WhatsApp, réponse en quelques minutes.'],
+];
+
+const FAQ_P = [
+  { q: `Ce forfait ${plan.name} inclut-il la VOD ?`, a: `<strong>Oui : le catalogue complet de +100 000 films et séries est inclus dans toutes les formules, de 3 mois à 24 mois.</strong> La VOD s'actualise chaque semaine sans rien à installer de plus.` },
+  { q: `Comment vais-je recevoir mon ${plan.name} ?`, a: `<strong>Par e-mail, quelques minutes après le paiement : identifiants Xtream Codes (serveur, identifiant, mot de passe) et guides d'installation.</strong> L'activation prend ensuite moins de 5 minutes.` },
+  { q: `Quels appareils sont compatibles avec ${plan.name} ?`, a: `<strong>Smart TV Samsung et LG, Fire Stick, Android TV, box, iPhone, iPad, PC Windows et Mac.</strong> Les <a href="/installation-iptv/">guides d'installation</a> couvrent chaque appareil pas à pas.` },
+  { q: `Puis-je passer sur un autre forfait plus tard ?`, a: `<strong>Oui : au renouvellement, vous choisissez librement une autre durée, sans frais de changement.</strong> Aucun frais de changement.` },
+  { q: `${plan.name} est-il garanti ?`, a: `<strong>Oui : 30 jours satisfait ou remboursé, remboursement intégral.</strong> Testez le service réellement avant de vous engager plus loin.` },
+  { q: `Ai-je besoin d'un décodeur ou d'une antenne pour ${plan.name} ?`, a: `<strong>Non : tout passe par votre connexion internet et vos appareils actuels.</strong> Aucun matériel à acheter, aucune installation à domicile.` },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    '@id': `${SITE.url}${slug}#product`,
+    name: plan.name,
+    description: `${plan.name} : abonnement IPTV France ${plan.months} mois ${plan.screens > 1 ? `· ${plan.screens} écrans simultanés` : '· 1 écran'}, +20 000 chaînes, +100 000 films et séries, HD à 4K.`,
+    image: [`${SITE.url}/images/logo-mark.png`, `${SITE.url}/images/og-default.png`],
+    brand: { '@type': 'Brand', name: 'IPTV Smarters Pro' },
+    category: 'Abonnement IPTV',
+    aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.8', bestRating: '5', reviewCount: '327', ratingCount: '327' },
+    review: [
+      { '@type': 'Review', reviewBody: "Meilleur abonnement IPTV que j'ai testé en 3 ans. Installation sur Fire Stick en 5 minutes et zéro coupure, même pendant les grands matchs.", reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' }, author: { '@type': 'Person', name: 'Julien M.' } },
+      { '@type': 'Review', reviewBody: "Le code IPTV est arrivé par e-mail en 3 minutes. L'EPG fonctionne parfaitement sur ma Samsung, même en 4K.", reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' }, author: { '@type': 'Person', name: 'Camille D.' } },
+    ],
+    offers: {
+      '@type': 'Offer',
+      name: plan.name,
+      sku: `ISP-${plan.id.toUpperCase()}`,
+      price: plan.priceNumber.toFixed(2),
+      priceCurrency: 'EUR',
+      availability: 'https://schema.org/InStock',
+      url: `${SITE.url}${slug}`,
+      validFrom: '2026-10-01',
+      priceValidUntil: '2027-10-01',
+      seller: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'EUR' },
+        deliveryTime: { '@type': 'ShippingDeliveryTime', handlingTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 5, unitCode: 'MIN' }, transitTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 10, unitCode: 'MIN' } },
+        shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'FR' },
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'FR',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 30,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/FreeReturn',
+      },
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_P.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Tarifs', item: `${SITE.url}/#tarifs` },
+      { '@type': 'ListItem', position: 3, name: plan.name, item: `${SITE.url}${slug}` },
+    ],
+  },
+];
+---
+
+<Base title={TITLE} description={DESC} path={slug} ogImage="/images/og-default.png" hasOrder jsonLd={jsonLd}>
+  <section class="section soft" style="padding-top: clamp(2rem, 5vw, 3rem);">
+    <div class="wrap">
+      <Breadcrumbs items={[{ label: 'Accueil', href: '/' }, { label: 'Tarifs', href: '/#tarifs' }, { label: plan.name }]} />
+      <div class="grid g2" style="align-items:center; gap:2rem;">
+        <div>
+          <p class="eyebrow">Formule {plan.months} mois{plan.screens > 1 ? ` · ${plan.screens} écrans` : ''}</p>
+          <h1>{plan.name} — <span class="kw">abonnement IPTV France</span> en 4K</h1>
+          <p class="desc" style="font-size:1.06rem;">
+            {is3 && "La formule idéale pour tester IPTV Smarters Pro sans engagement long : le catalogue complet, la qualité 4K et le support 24/7 pendant 3 mois."}
+            {is12 && "La formule la plus choisie des abonnés français : le catalogue complet, la 4K et le support 24/7 pendant 12 mois, à 4,16 € par mois."}
+            {is2s && "Deux écrans simultanés pendant 12 mois : le match au salon et les séries en chambre, avec tout le catalogue et la 4K."}
+          </p>
+          <ul style="list-style:none; display:flex; flex-wrap:wrap; gap:10px; padding:0; margin:0 0 1.4rem;">
+            <li class="chip"><span class="dot"></span>{PROMISES[0].title}</li>
+            <li class="chip"><span class="dot" style="background:var(--blue);"></span>Code instantané par e-mail</li>
+            <li class="chip"><span class="dot" style="background:var(--good);"></span>Support FR 24/7</li>
+          </ul>
+          <div class="hero-price" style="display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap; margin-bottom:1rem;">
+            <p style="font-family:var(--font-display); font-weight:800; font-size:2.6rem; color:var(--ink); margin:0; letter-spacing:-0.02em;">{plan.price}</p>
+            <p style="margin:0; color:var(--red-dark); font-weight:700;">soit {plan.perMonth}<br /><span style="color:var(--ink-3); font-weight:600;">TTC · paiement sécurisé</span></p>
+          </div>
+          <button type="button" class="btn btn-red" data-iptv-form={plan.formId} style="font-size:1.08rem;">
+            Commander {plan.name.replace('IPTV Smarters Pro ', '')}
+          </button>
+          <p style="font-size:0.85rem; color:var(--ink-3); margin:0.7rem 0 0;">{PROMISES[0].title} · {PROMISES[1].title}</p>
+        </div>
+        <div class="device-panel" aria-label="Appareils compatibles">
+          <div class="dp-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg><span>Smart TV</span></div>
+          <div class="dp-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20M7 4v16M17 4v16"/></svg><span>Android TV</span></div>
+          <div class="dp-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg><span>iPhone / iPad</span></div>
+          <div class="dp-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>PC / Mac</span></div>
+          <div class="dp-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12a7 7 0 0 1 14 0v7H5v-7z"/><path d="M16 19h2a2 2 0 0 0 0-4"/></svg><span>Fire Stick</span></div>
+          <div class="dp-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M7 20h10M12 16v4"/></svg><span>Box / TV opérateur</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">Contenu inclus</p>
+        <h2>Ce que comprend <span class="kw">{plan.name}</span></h2>
+      </div>
+      <div class="grid g3">
+        {INCLUDED.map(([t, d]) => (
+          <div class="card reveal"><h3 style="font-size:1.02rem;">{t}</h3><p style="margin:0; font-size:0.93rem;">{d}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">Compatibilité</p>
+        <h2>Appareils et applications compatibles avec <span class="kw">{plan.name}</span></h2>
+      </div>
+      <div class="grid g3">
+        <div class="card"><h3>Smart TV Samsung & LG</h3><p style="margin:0; font-size:0.93rem;">IBO Player, Flix IPTV, SmartOne — <a href="/blog/installer-iptv-smarters-pro-smart-tv/">guide Smart TV</a>.</p></div>
+        <div class="card"><h3>Fire Stick / Android TV</h3><p style="margin:0; font-size:0.93rem;">IPTV Smarters Pro, TiviMate — <a href="/blog/installer-iptv-smarters-pro-fire-stick/">guide Fire Stick</a> et <a href="/blog/configurer-iptv-smarters-pro-android-tv/">guide Android TV</a>.</p></div>
+        <div class="card"><h3>iPhone, iPad, PC, Mac</h3><p style="margin:0; font-size:0.93rem;">IPTV Smarters Pro officiel — <a href="/blog/regarder-iptv-smarters-pro-iphone/">guide iPhone</a> et <a href="/blog/installer-iptv-smarters-pro-pc/">guide PC</a>.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">Livraison</p>
+        <h2>Réception et activation de votre <span class="kw">{plan.name}</span></h2>
+      </div>
+      <div class="grid g4">
+        <div class="card reveal"><p style="font-family:var(--font-display); font-weight:800; font-size:1.7rem; color:var(--red); margin:0;">01</p><h3>Commande sécurisée</h3><p style="margin:0; font-size:0.9rem;">Paiement en toute sécurité depuis la page de commande.</p></div>
+        <div class="card reveal"><p style="font-family:var(--font-display); font-weight:800; font-size:1.7rem; color:var(--red); margin:0;">02</p><h3>E-mail en quelques minutes</h3><p style="margin:0; font-size:0.9rem;">Identifiants Xtream Codes + guides d'installation, 24h/24.</p></div>
+        <div class="card reveal"><p style="font-family:var(--font-display); font-weight:800; font-size:1.7rem; color:var(--red); margin:0;">03</p><h3>Connexion en 3 champs</h3><p style="margin:0; font-size:0.9rem;">Collez serveur, identifiant et mot de passe dans l'application.</p></div>
+        <div class="card reveal"><p style="font-family:var(--font-display); font-weight:800; font-size:1.7rem; color:var(--red); margin:0;">04</p><h3>TV immédiate</h3><p style="margin:0; font-size:0.9rem;">Chaînes, VOD et EPG se chargent automatiquement.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft cv">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Comparer</p>
+        <h2>Les autres formules d'<span class="kw">abonnement IPTV</span></h2>
+      </div>
+      <div class="grid g2" style="max-width:920px;">
+        {otherPlans.map((p) => (
+          <PlanCard plan={p} showLink productUrl={PRODUCT_PAGE_SLUGS[p.id]} />
+        ))}
+      </div>
+      <p style="margin-top:1.2rem;">Besoin d'une autre durée ? La <a href="/#tarifs"><strong>grille tarifaire complète</strong></a> présente les quatre formules, du test de 3 mois au 24 mois économique.</p>
+    </div>
+  </section>
+
+  <section class="section cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">Avis</p>
+        <h2>Ce que disent les abonnés de <span class="kw">{plan.name}</span></h2>
+      </div>
+      <div class="grid g3">
+        <blockquote class="card" style="margin:0;"><p style="font-size:0.93rem; margin:0 0 0.6rem;">« Meilleur abonnement IPTV que j'ai testé en 3 ans. Installation sur Fire Stick en 5 minutes et zéro coupure, même pendant les grands matchs. »</p><footer style="font-size:0.85rem; color:var(--ink-3);"><strong style="color:var(--ink);">Julien M.</strong> · Lyon · <span style="color:var(--red);">★★★★★</span></footer></blockquote>
+        <blockquote class="card" style="margin:0;"><p style="font-size:0.93rem; margin:0 0 0.6rem;">« Le code IPTV est arrivé par e-mail en 3 minutes. L'EPG fonctionne parfaitement sur ma Samsung, même en 4K. »</p><footer style="font-size:0.85rem; color:var(--ink-3);"><strong style="color:var(--ink);">Camille D.</strong> · Nantes · <span style="color:var(--red);">★★★★★</span></footer></blockquote>
+        <blockquote class="card" style="margin:0;"><p style="font-size:0.93rem; margin:0 0 0.6rem;">« Support réactif à minuit un dimanche… en français. Ils m'ont configuré IPTV Smarters Pro sur ma box Android. »</p><footer style="font-size:0.85rem; color:var(--ink-3);"><strong style="color:var(--ink);">Thomas L.</strong> · Lille · <span style="color:var(--red);">★★★★★</span></footer></blockquote>
+      </div>
+      <p class="center" style="margin-top:0.8rem; font-size:0.85rem; color:var(--ink-3);">★ 4,8/5 sur 327 avis clients</p>
+    </div>
+  </section>
+
+  <section class="section soft cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">FAQ produit</p>
+        <h2>Questions fréquentes sur <span class="kw">{plan.name}</span></h2>
+      </div>
+      <div class="answers" style="max-width:860px; margin:0 auto;">
+        <Faq items={FAQ_P} />
+      </div>
+    </div>
+  </section>
+
+  <CtaStrip title={`Commander ${plan.name} — ${plan.price}`} />
+</Base>

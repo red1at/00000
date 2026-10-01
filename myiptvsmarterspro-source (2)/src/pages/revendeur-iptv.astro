@@ -1,0 +1,172 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE, CONTACT } from '../config/site';
+
+const FAQ_R = [
+  { q: "Comment devenir revendeur IPTV en France ?", a: "<strong>Contactez le support depuis cette page : vous recevez l'accès au panneau revendeur et les tarifs des packs de crédits dans la journée.</strong> Aucun prérequis technique, l'interface gère tout." },
+  { q: "Comment fonctionnent les crédits revendeur ?", a: "<strong>Vous achetez des crédits en gros, puis chaque ligne d'abonnement créée consomme un ou plusieurs crédits selon sa durée et son nombre d'écrans.</strong> Les essais gratuits et les renouvellements consomment aussi des crédits, à tarif réduit pour les essais." },
+  { q: "Puis-je créer des lignes d'essai pour mes clients ?", a: "<strong>Oui : le panneau permet de générer des lignes de test de 24 heures pour convaincre vos prospects avant la vente.</strong> Le nombre d'essais simultanés dépend de votre pack de crédits." },
+  { q: "Le panneau revendeur est-il en français ?", a: "<strong>Oui : l'interface, la documentation d'accompagnement et le support restent en français, comme pour les abonnés.</strong>" },
+  { q: "Quelle marge peut-on dégager en tant que revendeur IPTV ?", a: "<strong>La marge dépend de vos prix de vente : le coût d'une ligne en crédits reste bien inférieur aux prix publics de cette page (29,99 € à 79,99 €).</strong> Les packs de crédits sont communiqués sur demande, sans engagement." },
+  { q: "Mes clients sont-ils gérés depuis le même panneau ?", a: "<strong>Oui : création, expiration, renouvellement, blocage et transfert de lignes se pilotent depuis une seule interface, avec l'historique complet.</strong>" },
+  { q: "Le support revendeur est-il le même que celui des abonnés ?", a: "<strong>Oui, en priorité : les demandes revendeurs passent par le même canal {CONTACT.hours}.</strong> Vous pouvez aussi déléguer le support final de vos clients à votre enseigne — le panneau vous donne les outils." },
+  { q: "Puis-je tester avant de m'engager sur un gros pack ?", a: "<strong>Oui : commencez par le plus petit pack de crédits, vendez vos premières lignes, puis montez en puissance.</strong> Aucun volume minimum n'est imposé." },
+];
+
+const COMPARE = {
+  head: ['Critère', 'Revendeur IPTV', 'Abonnement individuel'],
+  rows: [
+    ['Accès', 'Panneau complet de gestion de lignes', 'Une ligne personnelle'],
+    ['Création de lignes', 'Illimitée selon vos crédits', '—'],
+    ['Lignes d\u2019essai 24 h', 'Oui, à tarif réduit', '—'],
+    ['Renouvellements', 'En un clic depuis le panneau', 'Via e-mail de renouvellement'],
+    ['Prix par ligne', 'Tarif crédits de gros (sur demande)', '29,99 € à 79,99 €'],
+    ['Support', 'Prioritaire {CONTACT.hours}', '{CONTACT.hours}'],
+  ],
+};
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE.url}/revendeur-iptv/`,
+    name: 'Devenir revendeur IPTV — panneau de crédits',
+    description: 'Programme revendeur IPTV Smarters Pro : panneau de gestion de lignes, crédits de gros, essais 24 h, support français prioritaire.',
+    url: `${SITE.url}/revendeur-iptv/`,
+    inLanguage: 'fr-FR',
+    isPartOf: { '@id': `${SITE.url}/#website` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_R.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '').replace('{CONTACT.hours}', CONTACT.hours) },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Revendeur IPTV', item: `${SITE.url}/revendeur-iptv/` },
+    ],
+  },
+];
+---
+
+<Base
+  title="Devenir revendeur IPTV : panneau de crédits sur demande"
+  description="Programme revendeur IPTV France : créez et gérez vos lignes depuis un panneau dédié, crédits de gros, essais 24 h et support prioritaire en français."
+  path="/revendeur-iptv/"
+  ogImage="/images/og-default.png"
+  jsonLd={jsonLd}
+>
+  <section class="section" style="padding-top: clamp(2.2rem, 5vw, 3.4rem);">
+    <div class="wrap">
+      <Breadcrumbs items={[{ label: 'Accueil', href: '/' }, { label: 'Revendeur IPTV' }]} />
+      <div class="sec-head center">
+        <p class="eyebrow">Programme professionnel</p>
+        <h1>Devenir <span class="kw">revendeur IPTV</span> : gérez vos propres lignes</h1>
+        <p class="desc">
+          Créez, gérez et renouvelez les abonnements de vos clients depuis un panneau simple,
+          avec des crédits de gros et le support français en priorité.
+        </p>
+      </div>
+
+      <div class="grid g2" style="max-width:920px; margin:0 auto;">
+        <div class="card"><h3>À qui s'adresse le revendeur ?</h3>
+          <p style="margin:0; font-size:0.95rem;">Installateurs, boutiques high-tech, community managers, entrepreneurs du web : toute personne souhaitant vendre des abonnements IPTV <a href="/">IPTV Smarters Pro</a> à sa clientèle, sans infrastructure technique à gérer.</p>
+        </div>
+        <div class="card"><h3>Ce que vous vendez</h3>
+          <p style="margin:0; font-size:0.95rem;">Le même service que cette page : +20 000 chaînes, +100 000 films et séries, HD à 4K, livraison du code en quelques minutes — à votre enseigne et à vos prix.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">Panneau revendeur</p>
+        <h2>Comment fonctionne le <span class="kw">revendeur IPTV</span> ?</h2>
+      </div>
+      <div class="grid g4">
+        <div class="card reveal"><h3>Créez des lignes</h3><p style="margin:0; font-size:0.93rem;">Générez un abonnement en 30 secondes : durée, nombre d'écrans, identifiants Xtream automatiques.</p></div>
+        <div class="card reveal"><h3>Gérez les crédits</h3><p style="margin:0; font-size:0.93rem;">Chaque ligne consomme des crédits selon sa durée et ses écrans ; rechargez quand vous voulez.</p></div>
+        <div class="card reveal"><h3>Offrez des essais</h3><p style="margin:0; font-size:0.93rem;">Des lignes de test 24 heures à tarif réduit pour convertir vos prospects avant la vente.</p></div>
+        <div class="card reveal"><h3>Renouvelez en un clic</h3><p style="margin:0; font-size:0.93rem;">Expiration, renouvellement, blocage, transfert : tout se pilote depuis une seule interface.</p></div>
+      </div>
+
+      <div class="card mt-2 center" style="max-width:760px; margin:1.6rem auto 0; padding:2rem 1.6rem;">
+        <h3>Packs de crédits</h3>
+        <p style="font-family:var(--font-display); font-weight:800; font-size:1.5rem; color:var(--red); margin:0.3rem 0;">Tarifs sur demande</p>
+        <p style="font-size:0.95rem; max-width:52ch; margin:0 auto 1.1rem;">
+          Les packs de crédits s'adaptent à votre volume et à votre marché : demandez la grille tarifaire du jour
+          — réponse dans la journée, sans engagement.
+        </p>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <a class="btn btn-red" href="/contact/">Demander les tarifs revendeur</a>
+          <a class="btn btn-ghost" href={`mailto:${CONTACT.email}`}>Écrire par e-mail</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cv">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Comparatif</p>
+        <h2><span class="kw">Revendeur IPTV</span> ou abonnement individuel ?</h2>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="tbl">
+          <thead><tr>{COMPARE.head.map((h) => <th scope="col">{h}</th>)}</tr></thead>
+          <tbody>
+            {COMPARE.rows.map((r) => <tr>{r.map((c) => <td set:html={c.replace('{CONTACT.hours}', CONTACT.hours)} />)}</tr>)}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">Parcours</p>
+        <h2>Votre démarrage de <span class="kw">revendeur IPTV</span> en 3 étapes</h2>
+      </div>
+      <div class="grid g3">
+        <div class="card reveal"><p style="font-family:var(--font-display); font-weight:800; font-size:1.9rem; color:var(--red); margin:0;">01</p><h3>Demandez l'accès</h3><p style="margin:0;">Contactez le support : vous recevez la grille de crédits et l'accès au panneau dans la journée.</p></div>
+        <div class="card reveal"><p style="font-family:var(--font-display); font-weight:800; font-size:1.9rem; color:var(--red); margin:0;">02</p><h3>Chargez vos crédits</h3><p style="margin:0;">Démarrez par le plus petit pack : vendez vos premières lignes et mesurez votre marché.</p></div>
+        <div class="card reveal"><p style="font-family:var(--font-display); font-weight:800; font-size:1.9rem; color:var(--red); margin:0;">03</p><h3>Vendez et gérez</h3><p style="margin:0;">Créez les lignes de vos clients, offrez les essais 24 h, renouvelez d'un clic avec le support en priorité.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">FAQ revendeur</p>
+        <h2>Questions fréquentes des <span class="kw">revendeurs IPTV</span></h2>
+      </div>
+      <div class="answers" style="max-width:860px; margin:0 auto;">
+        <Faq items={FAQ_R} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark cv">
+    <div class="wrap center">
+      <h2>Prêt à lancer votre activité de revendeur IPTV ?</h2>
+      <p style="max-width:62ch; margin:0 auto 1.4rem;">Demandez la grille de crédits du jour et l'accès au panneau : réponse dans la journée, en français, sans engagement.</p>
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+        <a class="btn btn-red" href="/contact/">Demander l'accès revendeur</a>
+        <a class="btn btn-ghost" href={`mailto:${CONTACT.email}`}><span style="color:#fff;">{CONTACT.email}</span></a>
+      </div>
+    </div>
+  </section>
+</Base>

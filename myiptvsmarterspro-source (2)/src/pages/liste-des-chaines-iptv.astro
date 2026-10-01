@@ -1,0 +1,131 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import CtaStrip from '../components/CtaStrip.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE, CLAIMS } from '../config/site';
+
+const GROUPS: [string, string, string][] = [
+  ['Chaînes nationales', "TNT et généralistes françaises", "Toute la télévision numérique terrestre française et les grandes chaînes généralistes : divertissement, magazines, fictions et grandes soirées en direct, en HD et Full HD."],
+  ['Sport', "Tous les sports en direct", "Football, rugby, tennis, Formule 1, moto, basket et sports US : les compétitions françaises, européennes et internationales en direct, en HD minimum et jusqu'à la 4K selon les diffuseurs."],
+  ['Cinéma & séries', "Les chaînes premium", "Chaînes de cinéma et de séries avec les dernières sorties, sagas, fictions françaises et séries phares, complétées par une VOD de plus de 100 000 titres."],
+  ['Information', "Info française et internationale", "Chaînes d'information en continu françaises et internationales : journaux, débats, chaînes économiques et news du monde entier, 24h/24."],
+  ['Jeunesse', "Dessins animés et ados", "Chaînes jeunesse pour tous les âges : dessins animés, programmes éducatifs, série animées et espace enfants sécurisé par contrôle parental dans l'application."],
+  ['Documentaires & découverte', "Nature, sciences, histoire", "Chaînes documentaires : nature, sciences, histoire, voyages, gastronomie et aventure, en Full HD, avec les grands formats documentaires internationaux."],
+  ['Musique & divertissement', "Clips, concerts, variétés", "Chaînes musicales et de divertissement : clips, concerts live, variétés, humour et jeux, pour accompagner toutes les soirées."],
+  ['International', "Europe, Maghreb, Afrique, Amériques, Asie", "Plus de 40 pays couverts : chaînes européennes, maghrébines, africaines, nord-américaines et asiatiques, en VO et selon les régions, pour les expatriés et les polyglottes."],
+];
+
+const FAQ_C = [
+  { q: "Une chaîne précise est-elle incluse dans l'abonnement IPTV ?", a: "<strong>Le catalogue couvre toutes les catégories listées sur cette page : nationales, sport, cinéma, info, jeunesse, documentaires et international.</strong> Pour confirmer une chaîne précise, demandez au support avant la commande — réponse en quelques minutes, 24h/24." },
+  { q: "Le catalogue des chaînes évolue-t-il ?", a: "<strong>Oui : le catalogue live est actualisé régulièrement et la VOD de plus de 100 000 titres est enrichie chaque semaine.</strong> Les ajouts et remplacements de flux s'appliquent automatiquement, sans nouvelle installation." },
+  { q: "Les chaînes sportives sont-elles en HD et 4K ?", a: "<strong>Les grandes chaînes sportives sont proposées en HD minimum, Full HD la plupart du temps et 4K selon les diffuseurs.</strong> Un débit de 25 Mbit/s garantit la fluidité des flux 4K." },
+  { q: "Puis-je demander l'ajout d'une chaîne ?", a: "<strong>Oui : les demandes d'abonnés orientent les mises à jour du catalogue.</strong> Écrivez au support avec le nom exact de la chaîne ; les demandes récurrentes sont traitées en priorité." },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    '@id': `${SITE.url}/liste-des-chaines-iptv/#list`,
+    name: 'Catalogue IPTV par catégories',
+    description: `Catalogue de l'abonnement IPTV Smarters Pro France : nationales, sport, cinéma, info, jeunesse, documentaires, musicales et internationales — ${CLAIMS.channels}.`,
+    itemListOrder: 'https://schema.org/ItemListOrderAscending',
+    numberOfItems: GROUPS.length,
+    itemListElement: GROUPS.map((g, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: g[0],
+      description: g[1],
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Liste des chaînes', item: `${SITE.url}/liste-des-chaines-iptv/` },
+    ],
+  },
+];
+---
+
+<Base
+  title={`Liste des chaînes IPTV : +20 000 chaînes FR & internationales`}
+  description="Catalogue IPTV inclus dans l'abonnement IPTV Smarters Pro France : chaînes nationales, sport, cinéma, info, jeunesse, documentaires et 40+ pays, en HD et 4K."
+  path="/liste-des-chaines-iptv/"
+  ogImage="/images/og-default.png"
+  jsonLd={jsonLd}
+>
+  <section class="section" style="padding-top: clamp(2.2rem, 5vw, 3.4rem);">
+    <div class="wrap">
+      <Breadcrumbs items={[{ label: 'Accueil', href: '/' }, { label: 'Liste des chaînes IPTV' }]} />
+      <div class="sec-head center">
+        <p class="eyebrow">Catalogue inclus</p>
+        <h1>Le catalogue des <span class="kw">chaînes IPTV</span> de votre abonnement</h1>
+        <p class="desc">
+          {CLAIMS.channels} en direct, {CLAIMS.vod} et la qualité {CLAIMS.quality} :
+          voici le contenu inclus dans chaque formule d'abonnement IPTV France, catégorie par catégorie.
+        </p>
+      </div>
+      <div class="grid g4" style="max-width:900px; margin:0 auto 2rem;">
+        <div class="card center"><p style="font-family:var(--font-display); font-weight:800; font-size:1.8rem; color:var(--blue); margin:0;">+20 000</p><p style="font-size:0.88rem; margin:0;">chaînes live</p></div>
+        <div class="card center"><p style="font-family:var(--font-display); font-weight:800; font-size:1.8rem; color:var(--blue); margin:0;">+100 000</p><p style="font-size:0.88rem; margin:0;">films & séries VOD</p></div>
+        <div class="card center"><p style="font-family:var(--font-display); font-weight:800; font-size:1.8rem; color:var(--blue); margin:0;">4K</p><p style="font-size:0.88rem; margin:0;">selon les diffuseurs</p></div>
+        <div class="card center"><p style="font-family:var(--font-display); font-weight:800; font-size:1.8rem; color:var(--blue); margin:0;">40+</p><p style="font-size:0.88rem; margin:0;">pays couverts</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft cv" style="padding-top:2rem;">
+    <div class="wrap">
+      <h2 style="font-size:clamp(1.25rem, 2.4vw, 1.5rem);">Le catalogue <span class="kw">chaînes IPTV</span> par catégorie</h2>
+      <p style="max-width:760px;">
+        Chaque <a href="/#tarifs">formule d'abonnement IPTV Smarters Pro</a> inclut l'intégralité du catalogue :
+        il n'existe pas de version réduite. Le même <a href="/blog/code-iptv-activation/">code IPTV</a> ouvre les huit catégories
+        ci-dessous sur tous vos <a href="/installation-iptv/">appareils compatibles</a>, avec l'EPG et le replay inclus.
+      </p>
+      <div class="grid g3" style="margin-top:1.6rem;">
+        {GROUPS.map(([title, sub, desc]) => (
+          <div class="card reveal">
+            <h3 style="font-size:1.05rem;">{title}</h3>
+            <p style="font-size:0.85rem; font-weight:700; color:var(--blue-600); margin:0 0 0.5rem;">{sub}</p>
+            <p style="margin:0; font-size:0.93rem;">{desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">VOD & replay</p>
+        <h2>La VOD de votre <span class="kw">abonnement IPTV</span></h2>
+        <p class="desc">Au-delà du live, la vidéothèque {CLAIMS.vod.toLowerCase()} complète le catalogue — actualisée chaque semaine.</p>
+      </div>
+      <div class="grid g2" style="align-items:center; gap:2rem;">
+        <img src="/images/vod.png" alt="Catalogue VOD de l'abonnement IPTV : mur de films et séries" width="1344" height="768" loading="lazy" style="border-radius:var(--r-card); box-shadow:var(--sh-lg);" />
+        <div>
+          <div class="chunk card"><h3 style="font-size:1rem;">Cinéma : nouveautés et classiques</h3><p style="margin:0; font-size:0.93rem;">Blockbusters récents, cinéma français, classiques restaurés et séries complètes, avec fiches et pochettes.</p></div>
+          <div class="chunk card"><h3 style="font-size:1rem;">Séries : saisons entières</h3><p style="margin:0; font-size:0.93rem;">Suivi de progression, nouveaux épisodes ajoutés chaque semaine, sous-titres et versions multiples selon les titres.</p></div>
+          <div class="chunk card"><h3 style="font-size:1rem;">Jeunesse & documentaires</h3><p style="margin:0; font-size:0.93rem;">Espace enfants regroupé, contrôle parental par code PIN et documentaires nature, sciences et histoire.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft cv">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="eyebrow">FAQ chaînes</p>
+        <h2>Questions fréquentes sur les <span class="kw">chaînes IPTV</span></h2>
+      </div>
+      <div class="answers" style="max-width:860px; margin:0 auto;">
+        <Faq items={FAQ_C} />
+      </div>
+    </div>
+  </section>
+
+  <CtaStrip title="Tout ce catalogue dès 3,33 € par mois" />
+</Base>

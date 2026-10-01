@@ -1,0 +1,17 @@
+---
+interface Crumb { label: string; href?: string }
+interface Props { items: Crumb[] }
+const { items } = Astro.props;
+const last = items[items.length - 1];
+const rest = items.slice(0, -1);
+---
+
+<nav class="crumbs" aria-label="Fil d'Ariane">
+  {rest.map((c) => (
+    <span>
+      {c.href ? <a href={c.href}>{c.label}</a> : c.label}
+      <span class="sep"> › </span>
+    </span>
+  ))}
+  <span><strong style="color: var(--ink)">{last.label}</strong></span>
+</nav>

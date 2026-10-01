@@ -1,0 +1,36 @@
+---
+import { SITE, FOOTER_COLUMNS, CONTACT, CLAIMS } from '../config/site';
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="/images/logo.png" alt={`Logo IPTV Smarters Pro — IPTV France`} width="81" height="30" />
+        </div>
+        <p style="font-size: 0.93rem">
+          L'abonnement <strong style="color:#fff">IPTV Smarters Pro</strong> pour la France : {CLAIMS.channels.toLowerCase()},
+          {CLAIMS.vod.toLowerCase()} et qualité {CLAIMS.quality}. Activation immédiate et support francophone 24/7.
+        </p>
+        <p style="font-size: 0.9rem">
+          <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+        </p>
+      </div>
+      {FOOTER_COLUMNS.map((col) => (
+        <div>
+          <h4>{col.title}</h4>
+          <ul>
+            {col.links.map((l) => (
+              <li><a href={l.href}>{l.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <div class="footer-bottom">
+      <span>© {new Date().getFullYear()} {SITE.name} — Tous droits réservés</span>
+      <span>Abonnement IPTV France · HD · 4K</span>
+    </div>
+  </div>
+</footer>

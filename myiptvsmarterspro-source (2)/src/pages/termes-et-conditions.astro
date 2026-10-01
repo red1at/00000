@@ -1,0 +1,100 @@
+---
+import LegalPage from '../components/LegalPage.astro';
+import { CONTACT } from '../config/site';
+
+const CHIP = `<span class="todo-chip">à compléter avant publication</span>`;
+---
+
+<LegalPage
+  title="Conditions générales — abonnement IPTV Smarters Pro France"
+  h1="Conditions générales de vente et d'utilisation"
+  description="Conditions générales de vente et dutilisation de labonnement IPTV Smarters Pro France : description du service, comptes, prix, livraison, usage loyal,"
+  path="/termes-et-conditions/"
+  sections={[
+    {
+      id: 's1',
+      h2: '1. Objet et description du service',
+      html: `<p><strong>Les présentes conditions régissent la vente et l'utilisation des abonnements IPTV proposés sur ce site, permettant l'accès à des flux de télévision par internet et à une vidéothèque VOD via des applications lecteur compatibles.</strong></p>
+<p>Le service comprend : l'accès à des flux de chaînes en direct, un catalogue de vidéos à la demande, un guide des programmes lorsque celui-ci est disponible, et une assistance technique en français. Le service est un service de revente technique d'accès à des flux ; l'éditeur du site n'est ni producteur ni diffuseur des contenus transportés. Le service nécessite une connexion internet fournie par un tiers (fournisseur d'accès) et un appareil compatible (Smart TV, stick TV, box, smartphone, ordinateur).</p>`,
+    },
+    {
+      id: 's2',
+      h2: '2. Éditeur et hébergeur',
+      html: `<p><strong>L'éditeur du site est la société ${CHIP} (dénomination sociale, forme juridique, capital social, siège social, numéro RCS, numéro de TVA intracommunautaire, représentant légal).</strong></p>
+<p>Hébergeur du site : ${CHIP} (raison sociale, adresse, téléphone). Directeur de la publication : ${CHIP}. Le numéro de SIRET et l'adresse complète sont communiqués sur simple demande écrite à l'adresse ${CONTACT.email}.</p>`,
+    },
+    {
+      id: 's3',
+      h2: "3. Comptes et lignes d'accès",
+      html: `<p><strong>Chaque abonnement correspond à une ligne d'accès identifiée par des identifiants Xtream Codes (serveur, identifiant, mot de passe) ou une adresse MAC selon l'application utilisée.</strong></p>
+<ul>
+<li>Les identifiants sont strictement personnels et ne doivent être ni partagés, ni revendus, ni publiés ;</li>
+<li>Chaque formule autorise un flux actif à la fois ; l'alternance entre vos appareils est illimitée ;</li>
+<li>Le nombre de connexions simultanées au-delà de la formule souscrite peut entraîner la suspension temporaire de la ligne jusqu'à déconnexion des appareils excédentaires ;</li>
+<li>En cas de perte des identifiants, le support les renvoie à l'adresse e-mail de commande.</li>
+</ul>`,
+    },
+    {
+      id: 's4',
+      h2: '4. Prix et paiement',
+      html: `<p><strong>Les prix des formules sont indiqués en euros toutes taxes comprises sur la page des tarifs : 3 mois (29,99 €), 6 mois (39,99 €), 12 mois (49,99 €) et 24 mois (79,99 €).</strong></p>
+<p>Le paiement s'effectue en ligne via la page de commande sécurisée. Les moyens de paiement acceptés sont affichés au moment de la commande. Le prix est payable intégralement au moment de la commande, sans escompte. Les prix peuvent évoluer ; le prix applicable est celui en vigueur au moment du paiement.</p>`,
+    },
+    {
+      id: 's5',
+      h2: '5. Livraison et activation',
+      html: `<p><strong>Les identifiants d'accès sont livrés par voie électronique (e-mail) dans les minutes suivant la confirmation du paiement, 24 heures sur 24.</strong></p>
+<p>La livraison est réputée effective à l'envoi de l'e-mail contenant les identifiants. En cas de non-réception, l'acheteur vérifie son dossier de courriers indésirables puis contacte le support. L'activation du service relève de la responsabilité de l'acheteur (installation de l'application, saisie des identifiants) ; les guides d'installation et le support technique accompagnent gratuitement cette mise en service.</p>`,
+    },
+    {
+      id: 's6',
+      h2: '6. Durée et renouvellement',
+      html: `<p><strong>Chaque abonnement est souscrit pour une durée déterminée (3, 6, 12 ou 24 mois) à compter de la livraison des identifiants.</strong></p>
+<p>Les abonnements ne se renouvellent pas automatiquement : le renouvellement s'effectue à l'initiative de l'abonné depuis l'e-mail de fin d'abonnement ou auprès du support. Aucun prélèvement récurrent n'est effectué sans action de l'abonné. Après expiration, la ligne est désactivée et les données de profil supprimées selon notre politique de confidentialité.</p>`,
+    },
+    {
+      id: 's7',
+      h2: '7. Usage loyal du service',
+      html: `<p><strong>L'abonnement est destiné à un usage strictement personnel et privé dans le cadre familial.</strong></p>
+<ul>
+<li>Est interdit : la revente ou la redistribution des flux, le partage public des identifiants, la captation et la rediffusion des contenus, l'usage simultané au-delà du nombre d'écrans souscrit, toute tentative d'ingénierie inverse des applications ;</li>
+<li>L'utilisation du service doit respecter les droits des ayants droit des contenus transportés ;</li>
+<li>Le non-respect de ces règles peut entraîner la suspension définitive de la ligne sans remboursement, après notification écrite restée sans effet.</li>
+</ul>`,
+    },
+    {
+      id: 's8',
+      h2: '8. Qualité du service et assistance',
+      html: `<p><strong>Le service est fourni avec une disponibilité optimale rendue par une infrastructure technique redondée et une assistance en français 24h/24 et 7j/7.</strong></p>
+<p>La qualité de réception dépend également de facteurs externes (débit internet, réseau local, équipement, application tierce). L'assistance aide à diagnostiquer et résoudre les incidents d'origine technique relevant du service ; elle ne peut garantir les conditions réseau propres à l'abonné. En cas d'indisponibilité prolongée du service, une compensation en durée (extension d'abonnement) est appliquée au prorata de la durée d'indisponibilité.</p>`,
+    },
+    {
+      id: 's9',
+      h2: '9. Droit de rétractation et remboursement',
+      html: `<p><strong>Le site applique une garantie commerciale de 30 jours « satisfait ou remboursé » décrite en détail dans la politique de remboursement.</strong></p>
+<p>Les conditions et la procédure de remboursement figurent sur la page dédiée. Le remboursement s'effectue par le moyen de paiement d'origine dans un délai bancaire standard.</p>`,
+    },
+    {
+      id: 's10',
+      h2: '10. Responsabilité et garanties',
+      html: `<p><strong>La responsabilité de l'éditeur est engagée au titre des obligations essentielles du présent contrat, dans les limites des dispositions légales applicables.</strong></p>
+<ul>
+<li>L'éditeur ne garantit pas un accès ininterrompu 24h/24 à chaque flux individuel, les interruptions ponctuelles pouvant résulter de maintenances ou de facteurs externes ;</li>
+<li>La responsabilité ne saurait être engagée pour les dommages résultant du réseau internet, de l'équipement de l'abonné, d'une défaillance du fournisseur d'accès ou d'applications tierces ;</li>
+<li>En tout état de cause, la responsabilité est plafonnée au montant effectivement payé pour l'abonnement en cause.</li>
+</ul>`,
+    },
+    {
+      id: 's11',
+      h2: '11. Résiliation',
+      html: `<p><strong>L'abonné peut demander la résiliation de son abonnement à tout moment ; la résiliation prend effet à l'expiration de la période souscrite.</strong></p>
+<p>La résiliation anticipée au titre de la garantie 30 jours ouvre droit au remboursement selon la politique de remboursement. L'éditeur peut suspendre ou résilier le service en cas de non-respect des conditions d'usage loyal décrites à l'article 7, après notification écrite.</p>`,
+    },
+    {
+      id: 's12',
+      h2: '12. Droit applicable et litiges',
+      html: `<p><strong>Les présentes conditions sont soumises au droit français.</strong></p>
+<p>En cas de litige, une solution amiable est recherchée en priorité par écrit à l'adresse ${CONTACT.email}. À défaut d'accord, le litige relève des tribunaux français compétents. Conformément à la réglementation, le consommateur peut également recourir à un médiateur de la consommation ; les coordonnées du médiateur sont communiquées sur demande. L'ensemble des textes applicable est accessible sur le site officiel Légifrance.</p>`,
+    },
+  ]}
+/>

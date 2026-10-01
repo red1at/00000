@@ -1,0 +1,93 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CtaStrip from '../../components/CtaStrip.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../../config/site';
+
+const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featured = posts[0];
+const rest = posts.slice(1);
+
+const dateFmt = (dt: Date) => dt.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+const fmt = (dt: Date) => dt.toISOString().split('T')[0];
+
+const title = `Blog IPTV Smarters Pro : guides d'installation et dépannage`;
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    '@id': `${SITE.url}/blog/`,
+    name: `Blog ${SITE.name}`,
+    description: `Guides d'installation, configuration et dépannage IPTV Smarters Pro en français : Fire Stick, Android TV, Smart TV, iPhone, PC.`,
+    url: `${SITE.url}/blog/`,
+    inLanguage: 'fr-FR',
+    publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+    blogPost: posts.map((p) => ({
+      '@type': 'BlogPosting',
+      headline: p.data.title,
+      description: p.data.description,
+      datePublished: p.data.pubDate.toISOString(),
+      url: `${SITE.url}/blog/${p.id}/`,
+      image: `${SITE.url}${p.data.image}`,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE.url}/blog/` },
+    ],
+  },
+];
+---
+
+<Base
+  title={title}
+  description="Tous nos guides IPTV Smarters Pro en français : installation sur Fire Stick, Smart TV, Android TV, iPhone, PC, activation du code IPTV, EPG et dépannage."
+  path="/blog/"
+  jsonLd={jsonLd}
+>
+  <section class="section">
+    <div class="wrap">
+      <Breadcrumbs items={[{ label: 'Accueil', href: '/' }, { label: 'Blog' }]} />
+      <div class="sec-head">
+        <p class="eyebrow">Guides & tutoriels</p>
+        <h1>Blog IPTV Smarters Pro : <span class="kw">guides</span> installation et dépannage</h1>
+        <p class="desc">
+          Installer IPTV Smarters Pro, activer votre code IPTV, configurer l'EPG ou réparer un problème :
+          tous nos guides <strong>abonnement IPTV</strong> rédigés en français, pas à pas, pour chaque appareil.
+        </p>
+      </div>
+
+      {featured && (
+        <a class="card" href={`/blog/${featured.id}/`} style="display:grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap:1.4rem; text-decoration:none; margin-bottom:2rem;">
+          <img src={featured.data.image} alt={featured.data.imageAlt} width="1344" height="768" loading="lazy" style="border-radius:14px;" />
+          <div>
+            <p class="eyebrow" style="margin-bottom:0.8rem;">À la une</p>
+            <h2 style="font-size:clamp(1.2rem,2.6vw,1.6rem);">{featured.data.title}</h2>
+            <p style="color:var(--ink-3);">{featured.data.description}</p>
+            <p class="meta-row" style="margin-top:0.6rem;">
+              <span>Publié le {dateFmt(featured.data.pubDate)}</span>
+            </p>
+            <span class="btn btn-ghost" style="margin-top:0.6rem;">Lire le guide →</span>
+          </div>
+        </a>
+      )}
+
+      <div class="grid g3">
+        {rest.map((p) => (
+          <a class="card" href={`/blog/${p.id}/`} style="text-decoration:none;">
+            <img src={p.data.image} alt={p.data.imageAlt} width="1344" height="768" loading="lazy" style="border-radius:12px; margin-bottom:0.9rem;" />
+            <h3 style="font-size:1.05rem;">{p.data.title}</h3>
+            <p style="font-size:0.92rem; color:var(--ink-3);">{p.data.description}</p>
+            <p class="meta-row" style="margin-top:0.5rem;"><time datetime={fmt(p.data.pubDate)}>{dateFmt(p.data.pubDate)}</time></p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaStrip />
+</Base>

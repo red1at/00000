@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import CtaStrip from '../components/CtaStrip.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE, CONTACT } from '../config/site';
+
+const CATS = [
+  { id: 'offres', label: 'Offres & tarifs' },
+  { id: 'paiement', label: 'Paiement & livraison' },
+  { id: 'installation', label: 'Installation' },
+  { id: 'chaines', label: 'Chaînes & VOD' },
+  { id: 'compte', label: 'Compte & appareils' },
+  { id: 'remboursement', label: 'Garantie' },
+];
+
+const FAQ_ALL = [
+  { cat: 'offres', q: "Quelles formules d'abonnement IPTV proposez-vous ?", a: "<strong>Quatre formules : 3 mois à 29,99 €, 6 mois à 39,99 €, 12 mois à 49,99 € et 24 mois à 79,99 €.</strong> Toutes incluent +20 000 chaînes, +100 000 films et séries, la qualité HD à 4K et le support français 24/7." },
+  { cat: 'offres', q: "Quel est le prix le plus avantageux par mois ?", a: "<strong>La formule 24 mois à 79,99 € descend à 3,33 € par mois ; le 12 mois à 49,99 € reste le plus choisi (4,16 €/mois).</strong> Le 3 mois sert de test sans engagement long." },
+  { cat: 'offres', q: "Puis-je utiliser mon abonnement sur plusieurs appareils ?", a: "<strong>Oui : le même code IPTV s'installe sur autant d'appareils que vous voulez — Smart TV, Fire Stick, Android, iPhone, PC.</strong> Un flux est actif à la fois : l'alternance entre vos appareils est instantanée et illimitée." },
+  { cat: 'offres', q: "Proposez-vous un abonnement revendeur ?", a: "<strong>Oui : le programme revendeur IPTV donne accès à un panneau de crédits pour créer et gérer vos propres lignes.</strong> Les tarifs de crédits sont communiqués sur demande via la page revendeur." },
+  { cat: 'paiement', q: "Quels moyens de paiement acceptez-vous ?", a: "<strong>Le paiement s'effectue en toute sécurité depuis la page de commande, et votre code IPTV arrive automatiquement par e-mail.</strong> Le détail des moyens acceptés s'affiche au moment de la commande." },
+  { cat: 'paiement', q: "En combien de temps reçois-je mon code IPTV ?", a: "<strong>Quelques minutes après le paiement, 24h/24 et 7j/7 : identifiants Xtream Codes, guides d'installation et liens de configuration.</strong> Vérifiez vos spams si l'e-mail tarde, puis contactez le support." },
+  { cat: 'paiement', q: "Comment renouveler mon abonnement IPTV ?", a: "<strong>Renouvelez depuis l'e-mail de fin d'abonnement ou en contactant le support avec l'adresse utilisée à la commande.</strong> Après un renouvellement, la propagation peut demander 15 à 45 minutes." },
+  { cat: 'installation', q: "Quelle application installer pour l'IPTV ?", a: "<strong>IPTV Smarters Pro sur Android, iOS, Fire Stick et PC ; IBO Player, Flix IPTV ou SmartOne sur Smart TV Samsung et LG.</strong> Les guides d'installation officiels couvrent chaque appareil pas à pas." },
+  { cat: 'installation', q: "Comment se connecter : code Xtream ou lien M3U ?", a: "<strong>Préférez la connexion Xtream Codes API : trois champs (serveur, identifiant, mot de passe) qui activent EPG, VOD et replay.</strong> Le M3U fonctionne aussi, sans guide TV automatique." },
+  { cat: 'installation', q: "Combien de temps prend l'installation ?", a: "<strong>5 à 10 minutes par appareil : installation de l'application, collage des identifiants, réglages du lecteur.</strong> Le support peut accompagner la première installation en direct." },
+  { cat: 'installation', q: "IPTV Smarters Pro refuse mon code : que faire ?", a: "<strong>Vérifiez l'URL du serveur (sans /get.php ni / final), l'absence d'espace en fin de champ et le respect des majuscules.</strong> Le guide « 12 solutions » du blog couvre tous les cas de figure." },
+  { cat: 'chaines', q: "Combien de chaînes et quels bouquets français ?", a: "<strong>Plus de 20 000 chaînes : TNT française complète, sport, cinéma, séries, info, jeunesse et international.</strong> La liste détaillée est publiée sur la page chaînes." },
+  { cat: 'chaines', q: "La VOD évolue-t-elle régulièrement ?", a: "<strong>Oui : le catalogue de plus de 100 000 films et séries est enrichi chaque semaine.</strong> Pochettes, fiches et reprise de lecture s'affichent dans IPTV Smarters Pro." },
+  { cat: 'chaines', q: "Le guide TV EPG et le replay sont-ils inclus ?", a: "<strong>Oui : l'EPG se met à jour automatiquement via la connexion Xtream, et le replay couvre les chaînes qui le proposent.</strong> En cas de guide vide, le tutoriel EPG du blog règle le problème en 5 minutes." },
+  { cat: 'chaines', q: "Quelle connexion internet faut-il ?", a: "<strong>10 Mbit/s en Full HD et 25 Mbit/s en 4K : tous les standards français passent, fibre comme ADSL récent.</strong> Comptez environ 1,5 Go de data par heure en Full HD sur mobile." },
+  { cat: 'compte', q: "Sur combien d'appareils puis-je installer mon code ?", a: "<strong>Autant que vous voulez : le même code s'installe sur Smart TV, Fire Stick, Android, iPhone et PC.</strong> Un flux est actif à la fois : fermez l'application d'un appareil avant d'ouvrir l'autre, l'alternance est instantanée." },
+  { cat: 'compte', q: "Que signifie « trop de connexions » à l'écran ?", a: "<strong>Votre ligne lit sur plus d'écrans que la formule ne l'autorise.</strong> Fermez l'application sur l'appareil inutilisé (pas seulement la TV), patientez une minute et reconnectez-vous." },
+  { cat: 'compte', q: "Ai-je besoin d'un VPN en France ?", a: "<strong>Non : les serveurs sont optimisés pour les connexions françaises, sans VPN.</strong> Un VPN ne sert qu'au rare cas d'un blocage réseau du fournisseur d'accès — testez d'abord sans." },
+  { cat: 'remboursement', q: "Quelle est votre garantie ?", a: "<strong>30 jours satisfait ou remboursé sur toutes les formules, remboursement intégral, sans condition cachée.</strong> La procédure et les conditions figurent sur la politique de remboursement." },
+  { cat: 'remboursement', q: "Comment se passe un remboursement ?", a: "<strong>Un e-mail au support avec votre numéro de commande suffit : le remboursement repart par le moyen de paiement d'origine.</strong> Le délai bancaire standard est de quelques jours ouvrés." },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    '@id': `${SITE.url}/faq/#faq`,
+    mainEntity: FAQ_ALL.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'FAQ', item: `${SITE.url}/faq/` },
+    ],
+  },
+];
+---
+
+<Base
+  title="FAQ IPTV Smarters Pro : tarifs, code, installation 2026"
+  description="Toutes les réponses sur l'abonnement IPTV Smarters Pro : formules et prix, livraison du code IPTV, installation, chaînes, VOD, écrans et garantie 30 jours."
+  path="/faq/"
+  ogImage="/images/logo-mark.png"
+  jsonLd={jsonLd}
+>
+  <section class="section" style="padding-top: clamp(2.2rem, 5vw, 3.4rem);">
+    <div class="wrap">
+      <Breadcrumbs items={[{ label: 'Accueil', href: '/' }, { label: 'FAQ' }]} />
+      <div class="sec-head center">
+        <p class="eyebrow">Foire aux questions</p>
+        <h1>FAQ <span class="kw">IPTV Smarters Pro</span> : toutes vos réponses</h1>
+        <p class="desc">
+          Formules, paiement, installation, chaînes, appareils, garantie : les 20 questions les plus posées
+          au support, classées par thème. Une question absente ? <a href="/contact/">Écrivez-nous</a>.
+        </p>
+      </div>
+      <div class="chips-row" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:2rem;">
+        {CATS.map((c) => (
+          <a class="chip" href={`#cat-${c.id}`} style="text-decoration:none; border-color: rgba(239,65,53,.35); background:var(--red-soft); color:var(--red-dark);">
+            <span class="dot"></span>{c.label}
+          </a>
+        ))}
+      </div>
+
+      {CATS.map((c) => (
+        <section id={`cat-${c.id}`} style="scroll-margin-top:90px; margin-bottom:2.4rem;">
+          <h2 style="font-size:clamp(1.25rem, 2.4vw, 1.55rem);">{c.label}</h2>
+          <div class="answers">
+            <Faq items={FAQ_ALL.filter((f) => f.cat === c.id)} h3={false} />
+          </div>
+        </section>
+      ))}
+
+      <div class="card center" style="max-width:860px; margin:0 auto; background:var(--night); border:0;">
+        <h3 style="color:#fff;">Pas trouvé votre réponse ?</h3>
+        <p style="color:rgba(255,255,255,0.75);">Le support français répond {CONTACT.hours.toLowerCase()} — préparez votre appareil, votre application et le message exact.</p>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <a class="btn btn-red" href="/contact/">Contacter le support</a>
+          <a class="btn btn-ghost" href="/installation-iptv/"><span style="color:#fff;">Guides d'installation</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaStrip />
+</Base>
